@@ -5,7 +5,7 @@ interface CallbackFunction {
 }
 
 public class GenericSearch {
-    public enum SearchAlgorithms{
+    public enum SearchAlgorithms {
         BF,
         DF,
         ID,
@@ -16,18 +16,17 @@ public class GenericSearch {
         AS2
     }
 
-    private static LinkedList<Node> queue = new LinkedList<>(); 
-
+    private static LinkedList<Node> queue = new LinkedList<>();
 
     public Object GeneralSearchFuntion(CallbackFunction callbackFunction) {
-        if(GenericSearch.queue.isEmpty()) {
+        if (GenericSearch.queue.isEmpty()) {
             return false;
         }
-        for (int i = 0; i < queue.size() ; i++) {
+        for (int i = 0; i < queue.size(); i++) {
             Node headNode = queue.removeFirst();
 
             NodeState headNodeState = headNode.getState();
-            if(headNodeState.prosperity == 100) {
+            if (headNodeState.prosperity == 100) {
                 return headNode;
             } else {
                 callbackFunction.onCallback();
