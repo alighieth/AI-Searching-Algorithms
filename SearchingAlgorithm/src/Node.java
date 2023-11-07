@@ -1,11 +1,11 @@
 public class Node {
-    private String state;
+    private NodeState state;
     private Node parent;
     private String operator;
     private int depth;
     private double pathCost;
 
-    public Node(String state, Node parent, String operator, int depth, double pathCost) {
+    public Node(NodeState state, Node parent, String operator, int depth, double pathCost) {
         this.state = state;
         this.parent = parent;
         this.operator = operator;
@@ -13,7 +13,7 @@ public class Node {
         this.pathCost = pathCost;
     }
 
-    public String getState() {
+    public NodeState getState() {
         return state;
     }
 
