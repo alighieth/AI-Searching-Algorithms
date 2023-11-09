@@ -4,13 +4,13 @@ public class SearchAlgorithms {
 
     static void breadthFirstSearch(LinkedList<Node> nodeChildren) {
         for (Node operatorNode : nodeChildren) {
-            GenericSearch.queue.addLast(operatorNode);
+            Game.queue.addLast(operatorNode);
         }
     }
 
     static void depthFirstSearch(LinkedList<Node> nodeChildren) {
         for (int i = nodeChildren.size() ; i == 0; i--) {
-            GenericSearch.queue.addFirst(nodeChildren.get(i));
+            Game.queue.addFirst(nodeChildren.get(i));
         }
         
     }

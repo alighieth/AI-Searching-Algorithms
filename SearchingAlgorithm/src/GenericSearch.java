@@ -5,25 +5,13 @@ interface CallbackFunction {
 }
 
 public class GenericSearch {
-    public enum SearchAlgorithms {
-        BF,
-        DF,
-        ID,
-        UC,
-        GR1,
-        GR2,
-        AS1,
-        AS2
-    }
-    public static int iterations = 0;
-    public static LinkedList<Node> queue = new LinkedList<>();
 
     public Object GeneralSearchFuntion(CallbackFunction callbackFunction) {
-        if (GenericSearch.queue.isEmpty()) {
+        if (Game.queue.isEmpty()) {
             return false;
         }
-        for (int i = 0; i < queue.size(); i++) {
-            Node headNode = queue.removeFirst();
+        for (int i = 0; i < Game.queue.size(); i++) {
+            Node headNode = Game.queue.removeFirst();
 
             NodeState headNodeState = headNode.getState();
             if (headNodeState.prosperity == 100) {
@@ -35,7 +23,46 @@ public class GenericSearch {
         return false;
     }
 
+    public static LinkedList<Node> getPossibleOperators(Node currentNode) {
+        LinkedList<Node> possibleOperators = new LinkedList<>();
+        // During delay of any request -> Build1, Build2, Wait
+        
+        if (Game.deliveries.size() > 0) {
+            
+        }
+        if (condition) {
+            
+        }
+        if (condition) {
+            
+        }
+        if (condition) {
+            
+        }
+        if (condition) {
+            
+        }
+        if (condition) {
+            
+        }
+
+        return possibleOperators;
+    }
+
+
+    public static LinkedList<Node> getPathToGoal(Node inputNode) {
+        LinkedList<Node> pathToGoal = new LinkedList<>();
+
+        Node currentNode = inputNode;
+        pathToGoal.addFirst(currentNode);
+        while (currentNode != null) {
+            pathToGoal.addFirst(currentNode.getParent());
+            currentNode = currentNode.getParent();
+        }
+        
+        return pathToGoal;
+    }
+
     // Get all possible nodes under parent and create their node with the parent relation
-    // Get path to goal
-    // 
+
 }
