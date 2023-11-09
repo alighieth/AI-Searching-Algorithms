@@ -15,8 +15,8 @@ public class GenericSearch {
         AS1,
         AS2
     }
-
-    private static LinkedList<Node> queue = new LinkedList<>();
+    public static int iterations = 0;
+    public static LinkedList<Node> queue = new LinkedList<>();
 
     public Object GeneralSearchFuntion(CallbackFunction callbackFunction) {
         if (GenericSearch.queue.isEmpty()) {
@@ -34,4 +34,8 @@ public class GenericSearch {
         }
         return false;
     }
+
+    // Get all possible nodes under parent and create their node with the parent relation
+    // Get path to goal
+    // 
 }

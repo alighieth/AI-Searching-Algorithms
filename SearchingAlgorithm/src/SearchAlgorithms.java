@@ -1,11 +1,18 @@
+import java.util.LinkedList;
+
 public class SearchAlgorithms {
 
-    static void breadthFirstSearch(Node initialNode) {
-
+    static void breadthFirstSearch(LinkedList<Node> nodeChildren) {
+        for (Node operatorNode : nodeChildren) {
+            GenericSearch.queue.addLast(operatorNode);
+        }
     }
 
-    static void depthFirstSearch(Node initialNode) {
-
+    static void depthFirstSearch(LinkedList<Node> nodeChildren) {
+        for (int i = nodeChildren.size() ; i == 0; i--) {
+            GenericSearch.queue.addFirst(nodeChildren.get(i));
+        }
+        
     }
 
     static void iterativeDeepeningSearch(Node initialNode) {
