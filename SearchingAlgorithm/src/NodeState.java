@@ -1,5 +1,6 @@
 public class NodeState {
-    public int food; 
+    public int food;    
+    public int energy; 
     public int prosperity;
     public int materials;
     public int money_spent;
