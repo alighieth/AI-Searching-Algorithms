@@ -1,5 +1,4 @@
 import java.util.LinkedList;
-
 interface CallbackFunction {
     void onCallback();
 }
@@ -23,28 +22,22 @@ public class GenericSearch {
         return false;
     }
 
-    public static LinkedList<Node> getPossibleOperators(Node currentNode) {
-        LinkedList<Node> possibleOperators = new LinkedList<>();
+    public static LinkedList<Game.Operators> getPossibleOperators(Node currentNode) {
+        LinkedList<Game.Operators> possibleOperators = new LinkedList<>();
         // During delay of any request -> Build1, Build2, Wait
+        // waiting only allowed if a delivery is taking place
+
+        if(Game.deliveries == null) {
+            possibleOperators.addFirst(Game.Operators.WAIT);
+        } else {
+            possibleOperators.addFirst(Game.Operators.REQUEST_ENERGY);            
+            possibleOperators.addFirst(Game.Operators.REQUEST_FOOD);
+            possibleOperators.addFirst(Game.Operators.REQUEST_MATERIALS);
+        }
         
-        if (Game.deliveries.size() > 0) {
-            
-        }
-        if (condition) {
-            
-        }
-        if (condition) {
-            
-        }
-        if (condition) {
-            
-        }
-        if (condition) {
-            
-        }
-        if (condition) {
-            
-        }
+        possibleOperators.addFirst(Game.Operators.Build1);        
+        possibleOperators.addFirst(Game.Operators.Build2);
+
 
         return possibleOperators;
     }
