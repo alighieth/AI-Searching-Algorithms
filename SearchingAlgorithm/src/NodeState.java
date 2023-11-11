@@ -9,6 +9,7 @@ public class NodeState {
     public NodeState(int prosperity, int food, int materials, int energy, int money_spent){
         this.food = food;
         this.materials = materials;
+        this.energy = energy;
         this.money_spent = money_spent;
         this.prosperity = prosperity;
     }
