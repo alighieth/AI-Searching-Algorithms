@@ -294,17 +294,19 @@ public class SearchProblem {
         // During delay of any request -> Build1, Build2, Wait
         // waiting only allowed if a delivery is taking place
 
+        possibleOperators.addLast(SearchProblem.Operators.Build1);
+        possibleOperators.addLast(SearchProblem.Operators.Build2);
+
+
         if (this.deliveries == null ) {
-            possibleOperators.addFirst(SearchProblem.Operators.WAIT);
+            possibleOperators.addLast(SearchProblem.Operators.WAIT);
         } 
         else if(currentNode.getOperator() == null || this.deliveries != null){
-            possibleOperators.addFirst(SearchProblem.Operators.REQUEST_ENERGY);
-            possibleOperators.addFirst(SearchProblem.Operators.REQUEST_FOOD);
-            possibleOperators.addFirst(SearchProblem.Operators.REQUEST_MATERIALS);
+            possibleOperators.addLast(SearchProblem.Operators.REQUEST_FOOD);
+            possibleOperators.addLast(SearchProblem.Operators.REQUEST_MATERIALS);
+            possibleOperators.addLast(SearchProblem.Operators.REQUEST_ENERGY);
         }
 
-        possibleOperators.addFirst(SearchProblem.Operators.Build1);
-        possibleOperators.addFirst(SearchProblem.Operators.Build2);
 
         return possibleOperators;
     }
