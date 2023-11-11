@@ -1,11 +1,11 @@
 public class Node {
     private NodeState state;
     private Node parent;
-    private Game.Operators operator;
+    private SearchProblem.Operators operator;
     private int depth;
     private double pathCost;
 
-    public Node(NodeState state, Node parent, Game.Operators operator, int depth, double pathCost) {
+    public Node(NodeState state, Node parent, SearchProblem.Operators operator, int depth, double pathCost) {
         this.state = state;
         this.parent = parent;
         this.operator = operator;
@@ -21,7 +21,7 @@ public class Node {
         return parent;
     }
 
-    public Game.Operators getOperator() {
+    public SearchProblem.Operators getOperator() {
         return operator;
     }
 
