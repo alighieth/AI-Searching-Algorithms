@@ -85,8 +85,8 @@ public class SearchProblem {
                 initialMaterials,
                 0);
         this.root = new Node(initialState, null, null, 0, 0, 0, 0);
-        this.strategy = strategy;
         this.queue.add(root);
+        this.strategy = strategy;
     }
 
     public void setAttributesFromString(String inputString) {
