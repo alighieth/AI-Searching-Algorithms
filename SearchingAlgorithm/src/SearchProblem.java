@@ -26,6 +26,7 @@ public class SearchProblem {
     public RequestDelivery deliveries;
 
     private Node root;
+    public Node currentNode;
     public int initialProsperity;
     public int initialFood, initialMaterials, initialEnergy;
     public int unitPriceFood, unitPriceMaterials, unitPriceEnergy;
@@ -79,11 +80,11 @@ public class SearchProblem {
             System.out.println("-------------------------------------------");
         }
         NodeState initialState = new NodeState(
-                initialFood,
-                initialEnergy,
-                initialProsperity,
-                initialMaterials,
-                0);
+            initialFood,
+            initialEnergy,
+            initialProsperity,
+            initialMaterials,
+            0);
         this.root = new Node(initialState, null, null, 0, 0, 0, 0);
         this.queue.add(root);
         this.strategy = strategy;
@@ -271,6 +272,14 @@ public class SearchProblem {
 
     public LinkedList<Node> expandNode(Node currNode) {
         LinkedList<Node> children = new LinkedList<>();
+
+        System.out.println(".........................................");        
+        System.out.println("Node Operator in expansion " + currNode.getOperator());
+        System.out.println("Initial Food " + currNode.getState().food);        
+        System.out.println("Initial Energy " + currNode.getState().energy);
+        System.out.println("Initial Materials " + currNode.getState().materials);
+        System.out.println(".........................................");
+
 
         if (currNode.getState().energy < 1 || currNode.getState().food < 1 || currNode.getState().materials < 1)
             return children;

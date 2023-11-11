@@ -7,52 +7,52 @@ public class LLAPSearch extends GenericSearch {
 
         if (SearchProblem.SearchAlgorithms.BF.equals(strategy)) {
             Q_INGFunc BFCallBack = () -> {
-                SearchAlgorithms.breadthFirstSearch(problem, problem.getRoot());
+                SearchAlgorithms.breadthFirstSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, BFCallBack);
         } else if (SearchProblem.SearchAlgorithms.DF.equals(strategy)) {
             Q_INGFunc DFCallBack = () -> {
-                SearchAlgorithms.depthFirstSearch(problem, problem.getRoot());
+                SearchAlgorithms.depthFirstSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.ID.equals(strategy)) {
             Q_INGFunc IDCallBack = () -> {
-                SearchAlgorithms.iterativeDeepeningSearch(problem, problem.getRoot());
+                SearchAlgorithms.iterativeDeepeningSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, IDCallBack);
         } else if (SearchProblem.SearchAlgorithms.UC.equals(strategy)) {
             Q_INGFunc UCCallBack = () -> {
-                SearchAlgorithms.uniformCostSearch(problem, problem.getRoot());
+                SearchAlgorithms.uniformCostSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, UCCallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.GR1.equals(strategy)) {
             Q_INGFunc GR1CallBack = () -> {
-                SearchAlgorithms.greedySearch(problem, problem.getRoot(), 0);
+                SearchAlgorithms.greedySearch(problem, problem.currentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR1CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.GR2.equals(strategy)) {
             Q_INGFunc GR2CallBack = () -> {
-                SearchAlgorithms.greedySearch(problem, problem.getRoot(), 0);
+                SearchAlgorithms.greedySearch(problem, problem.currentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR2CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.AS1.equals(strategy)) {
             Q_INGFunc AS1CallBack = () -> {
-                SearchAlgorithms.aStarSearch(problem, problem.getRoot(), 0);
+                SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS1CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.AS2.equals(strategy)) {
             Q_INGFunc AS2CallBack = () -> {
-                SearchAlgorithms.aStarSearch(problem, problem.getRoot(), 0);
+                SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         } else if (goalNode == null || (boolean) goalNode == false) {

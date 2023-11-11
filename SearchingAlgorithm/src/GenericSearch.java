@@ -12,6 +12,7 @@ public class GenericSearch {
         }
         for (int i = 0; i < problem.queue.size(); i++) {
             Node headNode = problem.queue.removeFirst();
+            problem.currentNode = headNode;
             // NodeState nodeState = headNode.getState();
             System.out.println("Operator" + headNode.getOperator());
 
