@@ -205,7 +205,8 @@ public class SearchProblem {
     }
 
     public Node build1(Node parentNode, int depth) {
-        NodeState newNodeState = parentNode.getState();
+        NodeState parNodeState = parentNode.getState();
+        NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
         newNodeState.energy -= this.energyUseBUILD1;
         newNodeState.food -= SearchProblem.foodUseBUILD1;
         newNodeState.materials -= this.materialsUseBUILD1;
@@ -219,12 +220,14 @@ public class SearchProblem {
     }
 
     public Node build2(Node parentNode, int depth) {
-        NodeState newNodeState = parentNode.getState();
+        NodeState parNodeState = parentNode.getState();
+        NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
         newNodeState.energy -= this.energyUseBUILD2;
         newNodeState.food -= SearchProblem.foodUseBUILD2;
         newNodeState.materials -= this.materialsUseBUILD2;
         newNodeState.prosperity += SearchProblem.prosperityBUILD2;
         newNodeState.money_spent -= this.priceBUILD2;
+        
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 2 -> " + newNodeState.prosperity );
 
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, 0);
