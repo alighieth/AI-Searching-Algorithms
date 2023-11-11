@@ -58,12 +58,15 @@ public class LLAPSearch extends GenericSearch {
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         }
-        if (goalNode == null) {
+        if (goalNode == null || (boolean) goalNode == false) {
             result = "NOSOLUTION";
         } else {
-            Node newGoalNode = (Node) goalNode;
+            Node newGoalNode = null;
+            if(goalNode instanceof Node) {
+                newGoalNode = (Node) goalNode;
+            } 
             result = SearchProblem.getPathToGoal(newGoalNode, visualize) + ";" + newGoalNode.getPathCost() + ";"
-                    + SearchProblem.getPossibleOperators(problem.getRoot()).size() + ";";
+                    + problem.getPossibleOperators(problem.getRoot()).size() + ";";
         }
         System.out.println("");
         System.out.println(result);
