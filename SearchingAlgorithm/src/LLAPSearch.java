@@ -55,7 +55,7 @@ public class LLAPSearch extends GenericSearch {
                 SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
-        } 
+        }
         if (goalNode == null) {
             result = "NOSOLUTION";
         } else {

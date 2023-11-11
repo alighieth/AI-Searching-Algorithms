@@ -12,9 +12,10 @@ public class GenericSearch {
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
             // NodeState nodeState = headNode.getState();
-            System.out.println("Operator" + headNode.getOperator());
-
+            System.out.println("Operator " + headNode.getOperator());
             if (isGoalState(headNode)) {
+                System.out.println("Head Node Food " + headNode.getState().food + "Head Node energy "
+                        + headNode.getState().energy + "Head Node prosperity " + headNode.getState().prosperity);
                 return headNode;
             } else {
                 callbackFunction.onCallback();
