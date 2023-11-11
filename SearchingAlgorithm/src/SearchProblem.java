@@ -191,14 +191,14 @@ public class SearchProblem {
         return newNode;
     }
 
-    public static Node wait(Node parentNode, int depth) {
+    public Node wait(Node parentNode, int depth) {
         NodeState newNodeState = parentNode.getState();
         newNodeState.energy--;
         newNodeState.food--;
         newNodeState.materials--;
 
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, 0);
-        SearchProblem.handleDeliveries(newNode);
+        handleDeliveries(newNode);
         return newNode;
     }
 
@@ -240,8 +240,8 @@ public class SearchProblem {
 
     }
 
-    public static void handleDeliveries(Node currNode) {
-        if (this.deliveries == null) {
+    public void handleDeliveries(Node currNode) {
+        if (deliveries == null) {
             return;
         }
         // A price of a resource is paid when the resource is used not when requested.
@@ -279,7 +279,7 @@ public class SearchProblem {
         return children;
     }
 
-    public static LinkedList<SearchProblem.Operators> getPossibleOperators(Node currentNode) {
+    public LinkedList<SearchProblem.Operators> getPossibleOperators(Node currentNode) {
         LinkedList<SearchProblem.Operators> possibleOperators = new LinkedList<>();
         // During delay of any request -> Build1, Build2, Wait
         // waiting only allowed if a delivery is taking place
