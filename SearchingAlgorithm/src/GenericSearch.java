@@ -1,5 +1,3 @@
-import java.util.LinkedList;
-
 interface Q_INGFunc {
     void onCallback();
 }
