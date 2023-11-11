@@ -212,6 +212,8 @@ public class SearchProblem {
         newNodeState.prosperity += SearchProblem.prosperityBUILD1;
         newNodeState.money_spent -= this.priceBUILD1;
 
+        System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 1 -> " + newNodeState.prosperity );
+
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build1, depth, 0, 0, 0);
         return newNode;
     }
@@ -223,6 +225,7 @@ public class SearchProblem {
         newNodeState.materials -= this.materialsUseBUILD2;
         newNodeState.prosperity += SearchProblem.prosperityBUILD2;
         newNodeState.money_spent -= this.priceBUILD2;
+        System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 2 -> " + newNodeState.prosperity );
 
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, 0);
         return newNode;
