@@ -4,6 +4,7 @@ public class SearchAlgorithms {
 
     static void breadthFirstSearch(SearchProblem problem, Node parentNode) {
         LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
+        problem.printNodeExpansion(expandedNodes);
         for (Node operatorNode : expandedNodes) {
             problem.queue.addLast(operatorNode);
         }
