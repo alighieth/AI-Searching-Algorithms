@@ -1,4 +1,5 @@
 import java.util.LinkedList;
+
 interface Q_INGFunc {
     void onCallback();
 }
@@ -6,11 +7,11 @@ interface Q_INGFunc {
 public class GenericSearch {
 
     public Object GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
-        if (SearchProblem.queue.isEmpty()) {
+        if (problem.queue.isEmpty()) {
             return false;
         }
-        for (int i = 0; i < SearchProblem.queue.size(); i++) {
-            Node headNode = SearchProblem.queue.removeFirst();
+        for (int i = 0; i < problem.queue.size(); i++) {
+            Node headNode = problem.queue.removeFirst();
 
             if (isGoalState(headNode)) {
                 return headNode;
@@ -23,6 +24,6 @@ public class GenericSearch {
 
     public boolean isGoalState(Node node) {
         NodeState nodeState = node.getState();
-	    return nodeState.prosperity >= 100;
-	}
+        return nodeState.prosperity >= 100;
+    }
 }
