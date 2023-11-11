@@ -80,10 +80,10 @@ public class SearchProblem {
             System.out.println("-------------------------------------------");
         }
         NodeState initialState = new NodeState(
-            initialFood,
-            initialEnergy,
             initialProsperity,
+            initialFood,
             initialMaterials,
+            initialEnergy,
             0);
         this.root = new Node(initialState, null, null, 0, 0, 0, 0);
         this.queue.add(root);
