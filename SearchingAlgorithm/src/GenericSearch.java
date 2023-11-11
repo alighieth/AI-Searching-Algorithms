@@ -6,7 +6,7 @@ public class GenericSearch {
 
     public Object GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
         if (problem.queue.isEmpty()) {
-            return false;
+            return null;
         }
         for (int i = 0; i < problem.queue.size(); i++) {
             Node headNode = problem.queue.removeFirst();
@@ -20,7 +20,7 @@ public class GenericSearch {
                 callbackFunction.onCallback();
             }
         }
-        return false;
+        return null;
     }
 
     public boolean isGoalState(Node node) {

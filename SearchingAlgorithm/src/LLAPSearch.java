@@ -56,7 +56,7 @@ public class LLAPSearch extends GenericSearch {
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         } 
-        if (goalNode == null || (boolean) goalNode == false) {
+        if (goalNode == null) {
             result = "NOSOLUTION";
         } else {
             Node newGoalNode = null;
