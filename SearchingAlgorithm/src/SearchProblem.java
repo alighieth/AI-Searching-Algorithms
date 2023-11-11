@@ -285,9 +285,10 @@ public class SearchProblem {
         // During delay of any request -> Build1, Build2, Wait
         // waiting only allowed if a delivery is taking place
 
-        if (this.deliveries == null) {
+        if (this.deliveries == null || currentNode.getOperator().equals(null)) {
             possibleOperators.addFirst(SearchProblem.Operators.WAIT);
-        } else {
+        } 
+        if(this.deliveries instanceof RequestDelivery || currentNode.getOperator().equals(null)) {
             possibleOperators.addFirst(SearchProblem.Operators.REQUEST_ENERGY);
             possibleOperators.addFirst(SearchProblem.Operators.REQUEST_FOOD);
             possibleOperators.addFirst(SearchProblem.Operators.REQUEST_MATERIALS);
