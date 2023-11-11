@@ -10,61 +10,58 @@ public class LLAPSearch extends GenericSearch {
                 SearchAlgorithms.breadthFirstSearch(problem, problem.getRoot());
             };
             goalNode = gs.GeneralSearchFuntion(problem, BFCallBack);
-        }
-        if (SearchProblem.SearchAlgorithms.DF.equals(strategy)) {
+        } else if (SearchProblem.SearchAlgorithms.DF.equals(strategy)) {
             Q_INGFunc DFCallBack = () -> {
                 SearchAlgorithms.depthFirstSearch(problem, problem.getRoot());
             };
             goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
         }
 
-        if (SearchProblem.SearchAlgorithms.ID.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.ID.equals(strategy)) {
             Q_INGFunc IDCallBack = () -> {
                 SearchAlgorithms.iterativeDeepeningSearch(problem, problem.getRoot());
             };
             goalNode = gs.GeneralSearchFuntion(problem, IDCallBack);
-        }
-        if (SearchProblem.SearchAlgorithms.UC.equals(strategy)) {
+        } else if (SearchProblem.SearchAlgorithms.UC.equals(strategy)) {
             Q_INGFunc UCCallBack = () -> {
                 SearchAlgorithms.uniformCostSearch(problem, problem.getRoot());
             };
             goalNode = gs.GeneralSearchFuntion(problem, UCCallBack);
         }
 
-        if (SearchProblem.SearchAlgorithms.GR1.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.GR1.equals(strategy)) {
             Q_INGFunc GR1CallBack = () -> {
                 SearchAlgorithms.greedySearch(problem, problem.getRoot(), 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR1CallBack);
         }
 
-        if (SearchProblem.SearchAlgorithms.GR2.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.GR2.equals(strategy)) {
             Q_INGFunc GR2CallBack = () -> {
                 SearchAlgorithms.greedySearch(problem, problem.getRoot(), 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR2CallBack);
         }
 
-        if (SearchProblem.SearchAlgorithms.AS1.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.AS1.equals(strategy)) {
             Q_INGFunc AS1CallBack = () -> {
                 SearchAlgorithms.aStarSearch(problem, problem.getRoot(), 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS1CallBack);
         }
 
-        if (SearchProblem.SearchAlgorithms.AS2.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.AS2.equals(strategy)) {
             Q_INGFunc AS2CallBack = () -> {
                 SearchAlgorithms.aStarSearch(problem, problem.getRoot(), 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
-        }
-        if (goalNode == null || (boolean) goalNode == false) {
+        } else if (goalNode == null || (boolean) goalNode == false) {
             result = "NOSOLUTION";
         } else {
             Node newGoalNode = null;
-            if(goalNode instanceof Node) {
+            if (goalNode instanceof Node) {
                 newGoalNode = (Node) goalNode;
-            } 
+            }
             result = SearchProblem.getPathToGoal(newGoalNode, visualize) + ";" + newGoalNode.getPathCost() + ";"
                     + problem.getPossibleOperators(problem.getRoot()).size() + ";";
         }
@@ -74,6 +71,11 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-
+        LLAPSearch.solve("50;" +
+                "22,22,22;" +
+                "50,60,70;" +
+                "30,2;19,1;15,1;" +
+                "300,5,7,3,20;" +
+                "500,8,6,3,40;", SearchProblem.SearchAlgorithms.BF, false);
     }
 }
