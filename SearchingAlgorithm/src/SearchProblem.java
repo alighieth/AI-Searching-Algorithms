@@ -312,4 +312,10 @@ public class SearchProblem {
 
         return pathToGoal;
     }
+
+    public void printNodeExpansion(LinkedList<Node> nodeExp) {
+        for (Node node : nodeExp) {
+            System.out.println("Node operator " + node.getOperator());
+        }
+    }
 }
