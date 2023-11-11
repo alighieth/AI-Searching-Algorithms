@@ -1,11 +1,11 @@
 import java.util.LinkedList;
-interface CallbackFunction {
+interface Q_INGFunc {
     void onCallback();
 }
 
 public class GenericSearch {
 
-    public Object GeneralSearchFuntion(CallbackFunction callbackFunction) {
+    public Object GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
         if (SearchProblem.queue.isEmpty()) {
             return false;
         }
@@ -25,9 +25,4 @@ public class GenericSearch {
         NodeState nodeState = node.getState();
 	    return nodeState.prosperity >= 100;
 	}
-
-    
-
-    // Get all possible nodes under parent and create their node with the parent relation
-
 }
