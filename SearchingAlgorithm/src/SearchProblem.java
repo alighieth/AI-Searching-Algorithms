@@ -294,20 +294,10 @@ public class SearchProblem {
         // During delay of any request -> Build1, Build2, Wait
         // waiting only allowed if a delivery is taking place
 
-        if(currentNode.getOperator() == null) {
-            possibleOperators.addFirst(SearchProblem.Operators.WAIT);
-            possibleOperators.addFirst(SearchProblem.Operators.REQUEST_ENERGY);
-            possibleOperators.addFirst(SearchProblem.Operators.REQUEST_FOOD);
-            possibleOperators.addFirst(SearchProblem.Operators.REQUEST_MATERIALS);
-            possibleOperators.addFirst(SearchProblem.Operators.Build1);
-            possibleOperators.addFirst(SearchProblem.Operators.Build2);
-            return possibleOperators;
-        }
-
         if (this.deliveries == null ) {
             possibleOperators.addFirst(SearchProblem.Operators.WAIT);
         } 
-        else {
+        else if(currentNode.getOperator() == null || this.deliveries != null){
             possibleOperators.addFirst(SearchProblem.Operators.REQUEST_ENERGY);
             possibleOperators.addFirst(SearchProblem.Operators.REQUEST_FOOD);
             possibleOperators.addFirst(SearchProblem.Operators.REQUEST_MATERIALS);
