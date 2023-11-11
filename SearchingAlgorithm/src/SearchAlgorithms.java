@@ -8,6 +8,7 @@ public class SearchAlgorithms {
         for (Node operatorNode : expandedNodes) {
             problem.queue.addLast(operatorNode);
         }
+        System.out.println(problem.queue.size());
     }
 
     static void depthFirstSearch(SearchProblem problem, Node parentNode) {
