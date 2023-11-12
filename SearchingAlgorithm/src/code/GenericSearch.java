@@ -1,3 +1,4 @@
+package code;
 interface Q_INGFunc {
     void onCallback();
 }
@@ -11,11 +12,14 @@ public class GenericSearch {
         for (int i = 0; i < problem.queue.size(); i++) {
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
-            // NodeState nodeState = headNode.getState();
-            System.out.println("Operator " + headNode.getOperator());
+
+            if(problem.visualize) {
+                NodeState nodeState = headNode.getState();
+                System.out.println("......." + "GenericSearch DEQUEUE" + ".......");
+                System.out.println("Current dequeued node state -> " + nodeState.toString());
+            }
+
             if (isGoalState(headNode)) {
-                System.out.println("Head Node Food " + headNode.getState().food + "Head Node energy "
-                        + headNode.getState().energy + "Head Node prosperity " + headNode.getState().prosperity);
                 return headNode;
             } else {
                 callbackFunction.onCallback();

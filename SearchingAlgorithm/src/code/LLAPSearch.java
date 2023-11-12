@@ -1,28 +1,30 @@
+package code;
 public class LLAPSearch extends GenericSearch {
-    public static String solve(String initalState, SearchProblem.SearchAlgorithms strategy, boolean visualize) {
+    public static String solve(String initalState, String strategy, boolean visualize) {
         GenericSearch gs = new GenericSearch();
-        SearchProblem problem = new SearchProblem(initalState, strategy, visualize);
+        SearchProblem.SearchAlgorithms searchAlgorithm = SearchProblem.getSearchAlgo(strategy);
+        SearchProblem problem = new SearchProblem(initalState, searchAlgorithm, visualize);
         Object goalNode = null;
         String result = "";
 
-        if (SearchProblem.SearchAlgorithms.BF.equals(strategy)) {
+        if (SearchProblem.SearchAlgorithms.BF.equals(searchAlgorithm)) {
             Q_INGFunc BFCallBack = () -> {
                 SearchAlgorithms.breadthFirstSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, BFCallBack);
-        } else if (SearchProblem.SearchAlgorithms.DF.equals(strategy)) {
+        } else if (SearchProblem.SearchAlgorithms.DF.equals(searchAlgorithm)) {
             Q_INGFunc DFCallBack = () -> {
                 SearchAlgorithms.depthFirstSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
         }
 
-        else if (SearchProblem.SearchAlgorithms.ID.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.ID.equals(searchAlgorithm)) {
             Q_INGFunc IDCallBack = () -> {
                 SearchAlgorithms.iterativeDeepeningSearch(problem, problem.currentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, IDCallBack);
-        } else if (SearchProblem.SearchAlgorithms.UC.equals(strategy)) {
+        } else if (SearchProblem.SearchAlgorithms.UC.equals(searchAlgorithm)) {
             Q_INGFunc UCCallBack = () -> {
                 SearchAlgorithms.uniformCostSearch(problem, problem.currentNode);
             };
@@ -43,14 +45,14 @@ public class LLAPSearch extends GenericSearch {
             goalNode = gs.GeneralSearchFuntion(problem, GR2CallBack);
         }
 
-        else if (SearchProblem.SearchAlgorithms.AS1.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.AS1.equals(searchAlgorithm)) {
             Q_INGFunc AS1CallBack = () -> {
                 SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS1CallBack);
         }
 
-        else if (SearchProblem.SearchAlgorithms.AS2.equals(strategy)) {
+        else if (SearchProblem.SearchAlgorithms.AS2.equals(searchAlgorithm)) {
             Q_INGFunc AS2CallBack = () -> {
                 SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
             };
@@ -63,7 +65,7 @@ public class LLAPSearch extends GenericSearch {
             if (goalNode instanceof Node) {
                 newGoalNode = (Node) goalNode;
             }
-            result = SearchProblem.getPathToGoal(newGoalNode, visualize) + ";" + newGoalNode.getPathCost() + ";"
+            result = newGoalNode.getPathToGoal(visualize) + ";" + newGoalNode.getState().money_spent + ";"
                     + problem.getPossibleOperators(problem.getRoot()).size() + ";";
         }
         System.out.println("");
@@ -72,11 +74,19 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-        LLAPSearch.solve("50;" +
-                "22,22,22;" +
-                "50,60,70;" +
-                "30,2;19,1;15,1;" +
-                "300,5,7,3,20;" +
-                "500,8,6,3,40;", SearchProblem.SearchAlgorithms.BF, true);
+        String initialState0 = "17;" +
+                "49,30,46;" +
+                "7,57,6;" +
+                "7,1;20,2;29,2;" +
+                "350,10,9,8,28;" +
+                "408,8,12,13,34;";
+
+                // "50;" +
+                // "22,22,22;" +
+                // "50,60,70;" +
+                // "30,2;19,1;15,1;" +
+                // "300,5,7,3,20;" +
+                // "500,8,6,3,40;"
+        LLAPSearch.solve(initialState0, "BF", true);
     }
 }

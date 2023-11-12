@@ -1,3 +1,4 @@
+package code;
 import java.util.LinkedList;
 
 public class SearchProblem {
@@ -38,9 +39,11 @@ public class SearchProblem {
     public static int prosperityBUILD1, prosperityBUILD2, foodUseBUILD1, foodUseBUILD2;
     public int nodesCounter = 0;
     public SearchAlgorithms strategy;
+    public boolean visualize;
 
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
         this.queue = new LinkedList<>();
+        this.visualize = visualize;
         this.deliveries = null;
         setAttributesFromString(inputString);
         if (visualize) {
@@ -211,7 +214,7 @@ public class SearchProblem {
         newNodeState.food -= SearchProblem.foodUseBUILD1;
         newNodeState.materials -= this.materialsUseBUILD1;
         newNodeState.prosperity += SearchProblem.prosperityBUILD1;
-        newNodeState.money_spent -= this.priceBUILD1;
+        newNodeState.money_spent += this.priceBUILD1;
 
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 1 -> " + newNodeState.prosperity );
 
@@ -226,7 +229,7 @@ public class SearchProblem {
         newNodeState.food -= SearchProblem.foodUseBUILD2;
         newNodeState.materials -= this.materialsUseBUILD2;
         newNodeState.prosperity += SearchProblem.prosperityBUILD2;
-        newNodeState.money_spent -= this.priceBUILD2;
+        newNodeState.money_spent += this.priceBUILD2;
         
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 2 -> " + newNodeState.prosperity );
 
@@ -324,6 +327,40 @@ public class SearchProblem {
         }
 
         return pathToGoal;
+    }
+
+    public static SearchProblem.SearchAlgorithms getSearchAlgo(String strategy) {
+        SearchProblem.SearchAlgorithms strategyAlgo = SearchProblem.SearchAlgorithms.AS1;
+
+        if (SearchProblem.SearchAlgorithms.BF.name().equals(strategy)) {
+            strategyAlgo = SearchProblem.SearchAlgorithms.BF;
+        } else if (SearchProblem.SearchAlgorithms.DF.name().equals(strategy)) {
+            strategyAlgo = SearchProblem.SearchAlgorithms.DF;
+        }
+
+        else if (SearchProblem.SearchAlgorithms.ID.name().equals(strategy)) {
+           strategyAlgo = SearchProblem.SearchAlgorithms.ID;
+        } else if (SearchProblem.SearchAlgorithms.UC.name().equals(strategy)) {
+            strategyAlgo = SearchProblem.SearchAlgorithms.UC;
+        }
+
+        else if (SearchProblem.SearchAlgorithms.GR1.name().equals(strategy)) {
+           strategyAlgo = SearchProblem.SearchAlgorithms.GR1;
+        }
+
+        else if (SearchProblem.SearchAlgorithms.GR2.name().equals(strategy)) {
+           strategyAlgo = SearchProblem.SearchAlgorithms.GR2;
+        }
+
+        else if (SearchProblem.SearchAlgorithms.AS1.name().equals(strategy)) {
+           strategyAlgo = SearchProblem.SearchAlgorithms.AS1;
+        }
+
+        else if (SearchProblem.SearchAlgorithms.AS2.name().equals(strategy)) {
+            strategyAlgo = SearchProblem.SearchAlgorithms.AS2;
+        }
+
+        return strategyAlgo;
     }
 
     public void printNodeExpansion(LinkedList<Node> nodeExp) {

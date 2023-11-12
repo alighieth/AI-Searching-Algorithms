@@ -1,3 +1,4 @@
+package code;
 public class NodeState {
     public int food;    
     public int energy; 
@@ -12,5 +13,13 @@ public class NodeState {
         this.energy = energy;
         this.money_spent = money_spent;
         this.prosperity = prosperity;
+    }
+
+    public String getStringRepresentation() {
+        return String.format("%d-%d-%d-%d-%d-%s", food, energy, materials, prosperity);
+    } 
+    
+    public String toString() {
+    	return " ,Food " + food + " ,Energy" + energy + " ,Materials " + materials + " ,Depth " +depth + " ,Prosperity " + prosperity;
     }
 }
