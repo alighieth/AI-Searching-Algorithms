@@ -14,7 +14,7 @@ public class GenericSearch {
             System.out.println("Num iterations " + problem.iterations);
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
-            System.out.println("Head node " + headNode.getOperator() + " " + headNode.getState().toString());
+            System.out.println("Head node " + headNode.getOperator() + " " + headNode.toString());
 
             if(problem.visualize) {
                 NodeState nodeState = headNode.getState();

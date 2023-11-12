@@ -112,4 +112,7 @@ public class Node {
         return result.substring(0, result.length() - 1);
     }
 
+    public String toString() {
+    	return " ,Food " + state.food + " ,Energy " + state.energy + " ,Materials " + state.materials + " ,Depth " + depth + " ,Prosperity " + state.prosperity;
+    }
 }

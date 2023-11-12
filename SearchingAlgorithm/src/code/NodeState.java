@@ -5,7 +5,6 @@ public class NodeState {
     public int prosperity;
     public int materials;
     public int money_spent;
-    public int depth;
 
     public NodeState(int prosperity, int food, int materials, int energy, int money_spent){
         this.food = food;
@@ -18,8 +17,4 @@ public class NodeState {
     public String getStringRepresentation() {
         return String.format("%d-%d-%d-%d-%d-%s", food, energy, materials, prosperity);
     } 
-    
-    public String toString() {
-    	return " ,Food " + food + " ,Energy" + energy + " ,Materials " + materials + " ,Depth " +depth + " ,Prosperity " + prosperity;
-    }
 }
