@@ -183,7 +183,7 @@ public class SearchProblem {
         newNodeState.energy = Math.max(parentNode.getState().energy-1, 0);
         newNodeState.food = Math.max(parentNode.getState().food-1, 0);
         newNodeState.materials = Math.max(parentNode.getState().materials-1, 0);
-        newNodeState.money_spent = Math.min(parentNode.getState().money_spent + calculateActionCost(deliveryoOperator), 50);
+        newNodeState.money_spent = parentNode.getState().money_spent + calculateActionCost(deliveryoOperator);
 
         int depth = parentNode.getDepth() + 1;
         Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, delivery);
@@ -194,11 +194,11 @@ public class SearchProblem {
     public Node build1(Node parentNode) {
         NodeState parNodeState = parentNode.getState();
         NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
-        newNodeState.energy = Math.max(newNodeState.energy - this.energyUseBUILD1, 0) ;
-        newNodeState.food = Math.max(newNodeState.energy - SearchProblem.foodUseBUILD1, 0) ; ;
-        newNodeState.materials = Math.max(newNodeState.energy - this.materialsUseBUILD1, 0) ; ;
+        newNodeState.energy = Math.max(parNodeState.energy - this.energyUseBUILD1, 0) ;
+        newNodeState.food = Math.max(parNodeState.food - SearchProblem.foodUseBUILD1, 0) ; ;
+        newNodeState.materials = Math.max(parNodeState.materials - this.materialsUseBUILD1, 0) ; ;
         newNodeState.prosperity += SearchProblem.prosperityBUILD1;
-        newNodeState.money_spent += calculateActionCost(Operators.Build1);
+        newNodeState.money_spent = parentNode.getState().money_spent + calculateActionCost(Operators.Build1);
 
         int depth = parentNode.getDepth() + 1;
 
@@ -209,11 +209,11 @@ public class SearchProblem {
     public Node build2(Node parentNode) {
         NodeState parNodeState = parentNode.getState();
         NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
-        newNodeState.energy = Math.max(newNodeState.energy - this.energyUseBUILD2, 0) ;
-        newNodeState.food = Math.max(newNodeState.energy - SearchProblem.foodUseBUILD2, 0) ; ;
-        newNodeState.materials = Math.max(newNodeState.energy - this.materialsUseBUILD2, 0) ; ;
-        newNodeState.prosperity += SearchProblem.prosperityBUILD2;
-        newNodeState.money_spent += calculateActionCost(Operators.Build2);
+        newNodeState.energy = Math.max(parNodeState.energy - this.energyUseBUILD2, 0) ;
+        newNodeState.food = Math.max(parNodeState.food - SearchProblem.foodUseBUILD2, 0) ; ;
+        newNodeState.materials = Math.max(parNodeState.materials - this.materialsUseBUILD2, 0) ; ;
+        newNodeState.prosperity = parNodeState.prosperity + SearchProblem.prosperityBUILD2;
+        newNodeState.money_spent = parNodeState.money_spent + calculateActionCost(Operators.Build2);
         
         int depth = parentNode.getDepth() + 1;
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, parentNode.delivery);
@@ -239,11 +239,12 @@ public class SearchProblem {
     }
 
     public Node wait(Node parentNode) {
-        NodeState newNodeState = parentNode.getState();
+        NodeState parNodeState = parentNode.getState();
+        NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
         newNodeState.energy--;
         newNodeState.food--;
         newNodeState.materials--;
-        newNodeState.money_spent = Math.min(newNodeState.money_spent + calculateActionCost(Operators.WAIT), 50);
+        newNodeState.money_spent = parNodeState.money_spent + calculateActionCost(Operators.WAIT);
         
         int depth = parentNode.getDepth() + 1;
         Node nodeWithDelivery = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, parentNode.delivery);
@@ -278,9 +279,9 @@ public class SearchProblem {
 
     public int calculateActionCost(Operators action) {
 	    switch (action) {
-	      case REQUEST_FOOD: return unitPriceFood;
-	      case REQUEST_MATERIALS: return unitPriceMaterials;
-	      case REQUEST_ENERGY: return unitPriceEnergy;
+	      case REQUEST_FOOD:  return unitPriceEnergy + unitPriceFood + unitPriceMaterials;
+	      case REQUEST_MATERIALS:  return unitPriceEnergy + unitPriceFood + unitPriceMaterials;
+	      case REQUEST_ENERGY:  return unitPriceEnergy + unitPriceFood + unitPriceMaterials;
 	      case WAIT:
 	        return unitPriceEnergy + unitPriceFood + unitPriceMaterials;
 	      case Build1:
