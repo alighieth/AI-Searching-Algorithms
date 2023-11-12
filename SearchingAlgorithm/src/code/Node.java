@@ -6,6 +6,7 @@ public class Node {
     private Node parent;
     private SearchProblem.Operators operator;
     private int depth;
+    public RequestDelivery delivery;
     private int pathCost;
     private int heuristic1;
     private int heuristic2;
@@ -19,6 +20,7 @@ public class Node {
         this.pathCost = pathCost;
         this.heuristic1 = heuristic1;
         this.heuristic2 = heuristic2;
+        this.delivery = null;
     }
 
     public NodeState getState() {

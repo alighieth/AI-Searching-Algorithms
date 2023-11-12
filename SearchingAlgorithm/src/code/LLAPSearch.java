@@ -8,53 +8,53 @@ public class LLAPSearch extends GenericSearch {
         String result = "";
 
         if (SearchProblem.SearchAlgorithms.BF.equals(searchAlgorithm)) {
-            Q_INGFunc BFCallBack = () -> {
-                SearchAlgorithms.breadthFirstSearch(problem, problem.currentNode);
+            Q_INGFunc BFCallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.breadthFirstSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, BFCallBack);
         } else if (SearchProblem.SearchAlgorithms.DF.equals(searchAlgorithm)) {
-            Q_INGFunc DFCallBack = () -> {
-                SearchAlgorithms.depthFirstSearch(problem, problem.currentNode);
+            Q_INGFunc DFCallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.depthFirstSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.ID.equals(searchAlgorithm)) {
-            Q_INGFunc IDCallBack = () -> {
-                SearchAlgorithms.iterativeDeepeningSearch(problem, problem.currentNode);
+            Q_INGFunc IDCallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.iterativeDeepeningSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, IDCallBack);
         } else if (SearchProblem.SearchAlgorithms.UC.equals(searchAlgorithm)) {
-            Q_INGFunc UCCallBack = () -> {
-                SearchAlgorithms.uniformCostSearch(problem, problem.currentNode);
+            Q_INGFunc UCCallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.uniformCostSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, UCCallBack);
         }
 
-        else if (SearchProblem.SearchAlgorithms.GR1.equals(strategy)) {
-            Q_INGFunc GR1CallBack = () -> {
-                SearchAlgorithms.greedySearch(problem, problem.currentNode, 0);
+        else if (SearchProblem.SearchAlgorithms.GR1.equals(searchAlgorithm)) {
+            Q_INGFunc GR1CallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.greedySearch(searchProblem, parentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR1CallBack);
         }
 
-        else if (SearchProblem.SearchAlgorithms.GR2.equals(strategy)) {
-            Q_INGFunc GR2CallBack = () -> {
-                SearchAlgorithms.greedySearch(problem, problem.currentNode, 0);
+        else if (SearchProblem.SearchAlgorithms.GR2.equals(searchAlgorithm)) {
+            Q_INGFunc GR2CallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.greedySearch(searchProblem, parentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR2CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.AS1.equals(searchAlgorithm)) {
-            Q_INGFunc AS1CallBack = () -> {
-                SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
+            Q_INGFunc AS1CallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.aStarSearch(searchProblem, parentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS1CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.AS2.equals(searchAlgorithm)) {
-            Q_INGFunc AS2CallBack = () -> {
-                SearchAlgorithms.aStarSearch(problem, problem.currentNode, 0);
+            Q_INGFunc AS2CallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.aStarSearch(searchProblem, parentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         }
@@ -87,6 +87,6 @@ public class LLAPSearch extends GenericSearch {
                 // "30,2;19,1;15,1;" +
                 // "300,5,7,3,20;" +
                 // "500,8,6,3,40;"
-        LLAPSearch.solve(initialState0, "BF", true);
+        LLAPSearch.solve(initialState0, "BF", false);
     }
 }

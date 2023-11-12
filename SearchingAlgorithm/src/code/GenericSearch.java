@@ -1,6 +1,6 @@
 package code;
 interface Q_INGFunc {
-    void onCallback();
+    void onCallback(SearchProblem problem, Node parentNode);
 }
 
 public class GenericSearch {
@@ -9,9 +9,12 @@ public class GenericSearch {
         if (problem.queue.isEmpty()) {
             return null;
         }
-        for (int i = 0; i < problem.queue.size(); i++) {
+        while(!problem.queue.isEmpty()) {
+            problem.iterations++;
+            System.out.println("Num iterations " + problem.iterations);
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
+            System.out.println("Head node " + headNode.getOperator() + " " + headNode.getState().toString());
 
             if(problem.visualize) {
                 NodeState nodeState = headNode.getState();
@@ -22,9 +25,10 @@ public class GenericSearch {
             if (isGoalState(headNode)) {
                 return headNode;
             } else {
-                callbackFunction.onCallback();
+                callbackFunction.onCallback(problem, headNode);
             }
         }
+        
         return null;
     }
 

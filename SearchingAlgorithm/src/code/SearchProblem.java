@@ -24,8 +24,6 @@ public class SearchProblem {
 
     public int iterations = 0;
     public LinkedList<Node> queue;
-    public RequestDelivery deliveries;
-
     private Node root;
     public Node currentNode;
     public int initialProsperity;
@@ -44,7 +42,6 @@ public class SearchProblem {
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
         this.queue = new LinkedList<>();
         this.visualize = visualize;
-        this.deliveries = null;
         setAttributesFromString(inputString);
         if (visualize) {
 
@@ -144,27 +141,24 @@ public class SearchProblem {
 
         for (SearchProblem.Operators operator : pOperators) {
             if (operator.equals(Operators.REQUEST_ENERGY)) {
-                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.ENERGY, parentNode,
-                        parentNode.getState().depth + 1));
+                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.ENERGY, parentNode));
             } else if (operator.equals(Operators.REQUEST_FOOD)) {
-                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.FOOD, parentNode,
-                        parentNode.getState().depth + 1));
+                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.FOOD, parentNode));
             } else if (operator.equals(Operators.REQUEST_MATERIALS)) {
-                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.MATERIALS, parentNode,
-                        parentNode.getState().depth + 1));
+                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.MATERIALS, parentNode));
             } else if (operator.equals(Operators.Build1)) {
-                operatorNodes.add(build1(parentNode, parentNode.getState().depth + 1));
+                operatorNodes.add(build1(parentNode));
             } else if (operator.equals(Operators.Build2)) {
-                operatorNodes.add(build2(parentNode, parentNode.getState().depth + 1));
+                operatorNodes.add(build2(parentNode));
             } else if (operator.equals(Operators.WAIT)) {
-                operatorNodes.add(wait(parentNode, parentNode.getState().depth + 1));
+                operatorNodes.add(wait(parentNode));
             }
         }
 
         return operatorNodes;
     }
 
-    public Node requestDelivery(RequestDelivery.deliveryType deliveryType, Node parentNode, int depth) {
+    public Node requestDelivery(RequestDelivery.deliveryType deliveryType, Node parentNode) {
         int deliveryDelay = this.delayRequestFood;
         int deliveryAmount = this.amountRequestFood;
         SearchProblem.Operators deliveryoOperator = SearchProblem.Operators.REQUEST_FOOD;
@@ -190,24 +184,24 @@ public class SearchProblem {
         newNodeState.food--;
         newNodeState.materials--;
 
+        int depth = parentNode.getState().depth + 1;
         Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, 0);
-        this.deliveries = delivery;
-
+        newNode.delivery = delivery;
         return newNode;
     }
 
-    public Node wait(Node parentNode, int depth) {
+    public Node wait(Node parentNode) {
         NodeState newNodeState = parentNode.getState();
         newNodeState.energy--;
         newNodeState.food--;
         newNodeState.materials--;
-
+        int depth = parentNode.getState().depth + 1;
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, 0);
         handleDeliveries(newNode);
         return newNode;
     }
 
-    public Node build1(Node parentNode, int depth) {
+    public Node build1(Node parentNode) {
         NodeState parNodeState = parentNode.getState();
         NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
         newNodeState.energy -= this.energyUseBUILD1;
@@ -217,12 +211,13 @@ public class SearchProblem {
         newNodeState.money_spent += this.priceBUILD1;
 
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 1 -> " + newNodeState.prosperity );
+        int depth = parentNode.getState().depth + 1;
 
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build1, depth, 0, 0, 0);
         return newNode;
     }
 
-    public Node build2(Node parentNode, int depth) {
+    public Node build2(Node parentNode) {
         NodeState parNodeState = parentNode.getState();
         NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
         newNodeState.energy -= this.energyUseBUILD2;
@@ -232,7 +227,7 @@ public class SearchProblem {
         newNodeState.money_spent += this.priceBUILD2;
         
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 2 -> " + newNodeState.prosperity );
-
+        int depth = parentNode.getState().depth + 1;
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, 0);
         return newNode;
     }
@@ -252,27 +247,27 @@ public class SearchProblem {
     }
 
     public void handleDeliveries(Node currNode) {
-        if (deliveries == null) {
+        if (currNode.delivery == null) {
             return;
         }
         // A price of a resource is paid when the resource is used not when requested.
-        deliveries.delay--;
-        if (deliveries.delay == 0) {
+        currNode.delivery.delay--;
+        if (currNode.delivery.delay == 0) {
             NodeState nodeState = currNode.getState();
 
-            if (deliveries.type.equals(RequestDelivery.deliveryType.FOOD) && nodeState.food < 50) {
-                nodeState.food += deliveries.amount;
+            if (currNode.delivery.type.equals(RequestDelivery.deliveryType.FOOD) && nodeState.food < 50) {
+                nodeState.food += currNode.delivery.amount;
                 nodeState.food = nodeState.food >= 50 ? 50 : nodeState.food;
-            } else if (deliveries.type.equals(RequestDelivery.deliveryType.ENERGY) && nodeState.energy < 50) {
-                nodeState.energy += deliveries.amount;
+            } else if (currNode.delivery.type.equals(RequestDelivery.deliveryType.ENERGY) && nodeState.energy < 50) {
+                nodeState.energy += currNode.delivery.amount;
                 nodeState.energy = nodeState.energy >= 50 ? 50 : nodeState.energy;
-            } else if (deliveries.type.equals(RequestDelivery.deliveryType.MATERIALS) && nodeState.materials < 50) {
-                nodeState.materials += deliveries.amount;
+            } else if (currNode.delivery.type.equals(RequestDelivery.deliveryType.MATERIALS) && nodeState.materials < 50) {
+                nodeState.materials += currNode.delivery.amount;
                 nodeState.materials = nodeState.materials >= 50 ? 50 : nodeState.materials;
             }
 
         }
-        deliveries = null;
+        currNode.delivery = null;
     }
 
     public Node getRoot() {
@@ -282,12 +277,12 @@ public class SearchProblem {
     public LinkedList<Node> expandNode(Node currNode) {
         LinkedList<Node> children = new LinkedList<>();
 
-        System.out.println(".........................................");
-        System.out.println("Node Operator in expansion " + currNode.getOperator());
-        System.out.println("Initial Food " + currNode.getState().food);
-        System.out.println("Initial Energy " + currNode.getState().energy);
-        System.out.println("Initial Materials " + currNode.getState().materials);
-        System.out.println(".........................................");
+        // System.out.println(".........................................");
+        // System.out.println("Node Operator in expansion " + currNode.getOperator());
+        // System.out.println("Initial Food " + currNode.getState().food);
+        // System.out.println("Initial Energy " + currNode.getState().energy);
+        // System.out.println("Initial Materials " + currNode.getState().materials);
+        // System.out.println(".........................................");
 
         if (currNode.getState().energy < 1 || currNode.getState().food < 1 || currNode.getState().materials < 1)
             return children;
@@ -305,9 +300,9 @@ public class SearchProblem {
         possibleOperators.addLast(SearchProblem.Operators.Build1);
         possibleOperators.addLast(SearchProblem.Operators.Build2);
 
-        if (this.deliveries == null) {
+        if (currentNode.delivery != null && currentNode.getOperator() != null) {
             possibleOperators.addLast(SearchProblem.Operators.WAIT);
-        } else if (currentNode.getOperator() == null || this.deliveries != null) {
+        } else if (currentNode.getOperator() == null || currentNode.delivery == null) {
             possibleOperators.addLast(SearchProblem.Operators.REQUEST_FOOD);
             possibleOperators.addLast(SearchProblem.Operators.REQUEST_MATERIALS);
             possibleOperators.addLast(SearchProblem.Operators.REQUEST_ENERGY);
@@ -365,7 +360,18 @@ public class SearchProblem {
 
     public void printNodeExpansion(LinkedList<Node> nodeExp) {
         for (Node node : nodeExp) {
-            System.out.println("Node operator " + node.getOperator());
+            System.out.println("Node expansion operator " + node.getOperator());
         }
+    }
+
+    public void printQueue() {
+        if(queue.size() > 20 ) return;
+        System.out.println("***************************");
+        for(int i = 0; i < this.queue.size(); i++) {
+            Node dequedNode = queue.removeFirst();
+            System.out.println("Node at index " + i + " has an action " + dequedNode.getOperator() + " with depth " + dequedNode.getState().depth) ;
+            queue.addLast(dequedNode);
+        }
+        System.out.println("***************************");
     }
 }
