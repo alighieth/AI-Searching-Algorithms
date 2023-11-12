@@ -51,6 +51,7 @@ public class Node {
         return heuristic2;
     }
 
+
     public String getPathToGoal(boolean visualize) {
         Stack<Node> stack = new Stack<Node>();
         Node node = this;

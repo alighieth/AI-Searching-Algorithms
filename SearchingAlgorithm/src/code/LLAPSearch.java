@@ -4,7 +4,7 @@ public class LLAPSearch extends GenericSearch {
         GenericSearch gs = new GenericSearch();
         SearchProblem.SearchAlgorithms searchAlgorithm = SearchProblem.getSearchAlgo(strategy);
         SearchProblem problem = new SearchProblem(initalState, searchAlgorithm, visualize);
-        Object goalNode = null;
+        Node goalNode = null;
         String result = "";
 
         if (SearchProblem.SearchAlgorithms.BF.equals(searchAlgorithm)) {
@@ -61,12 +61,7 @@ public class LLAPSearch extends GenericSearch {
         if (goalNode == null) {
             result = "NOSOLUTION";
         } else {
-            Node newGoalNode = null;
-            if (goalNode instanceof Node) {
-                newGoalNode = (Node) goalNode;
-            }
-            result = newGoalNode.getPathToGoal(visualize) + ";" + newGoalNode.getState().money_spent + ";"
-                    + problem.getPossibleOperators(problem.getRoot()).size() + ";";
+            result = goalNode.getPathToGoal(visualize) + ";" + goalNode.getState().money_spent + ";" + problem.nodesExpandedCounter;
         }
         System.out.println("");
         System.out.println(result);

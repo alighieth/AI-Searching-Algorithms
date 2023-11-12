@@ -5,7 +5,7 @@ interface Q_INGFunc {
 
 public class GenericSearch {
 
-    public Object GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
+    public Node GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
         if (problem.queue.isEmpty()) {
             return null;
         }

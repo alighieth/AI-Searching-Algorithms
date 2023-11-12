@@ -38,6 +38,7 @@ public class SearchProblem {
     public int nodesCounter = 0;
     public SearchAlgorithms strategy;
     public boolean visualize;
+    public int nodesExpandedCounter = 0;
 
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
         this.queue = new LinkedList<>();
@@ -183,6 +184,7 @@ public class SearchProblem {
         newNodeState.energy--;
         newNodeState.food--;
         newNodeState.materials--;
+        newNodeState.money_spent += calculateActionCost(deliveryoOperator);
 
         int depth = parentNode.getState().depth + 1;
         Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, 0);
@@ -195,6 +197,8 @@ public class SearchProblem {
         newNodeState.energy--;
         newNodeState.food--;
         newNodeState.materials--;
+        newNodeState.money_spent += calculateActionCost(Operators.WAIT);
+
         int depth = parentNode.getState().depth + 1;
         Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, 0);
         handleDeliveries(newNode);
@@ -204,11 +208,11 @@ public class SearchProblem {
     public Node build1(Node parentNode) {
         NodeState parNodeState = parentNode.getState();
         NodeState newNodeState = new NodeState(parNodeState.prosperity, parNodeState.food, parNodeState.materials, parNodeState.energy, parNodeState.money_spent);
-        newNodeState.energy -= this.energyUseBUILD1;
+        newNodeState.energy =  this.energyUseBUILD1 ;
         newNodeState.food -= SearchProblem.foodUseBUILD1;
         newNodeState.materials -= this.materialsUseBUILD1;
         newNodeState.prosperity += SearchProblem.prosperityBUILD1;
-        newNodeState.money_spent += this.priceBUILD1;
+        newNodeState.money_spent += calculateActionCost(Operators.Build1);
 
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 1 -> " + newNodeState.prosperity );
         int depth = parentNode.getState().depth + 1;
@@ -224,7 +228,7 @@ public class SearchProblem {
         newNodeState.food -= SearchProblem.foodUseBUILD2;
         newNodeState.materials -= this.materialsUseBUILD2;
         newNodeState.prosperity += SearchProblem.prosperityBUILD2;
-        newNodeState.money_spent += this.priceBUILD2;
+        newNodeState.money_spent += calculateActionCost(Operators.Build2);
         
         System.out.println("Old propsperity -> " + parentNode.getState().prosperity + " Prosperity after building 2 -> " + newNodeState.prosperity );
         int depth = parentNode.getState().depth + 1;
@@ -274,8 +278,42 @@ public class SearchProblem {
         return root;
     }
 
+    public int calculateActionCost(Operators action) {
+	    switch (action) {
+	      case REQUEST_FOOD:
+	      case REQUEST_MATERIALS:
+	      case REQUEST_ENERGY:
+	      case WAIT:
+	        return unitPriceEnergy + unitPriceFood + unitPriceMaterials;
+	      case Build1:
+	        return (
+	          priceBUILD1 +
+	          foodUseBUILD1 *
+	          unitPriceFood +
+	          energyUseBUILD1 *
+	          unitPriceEnergy +
+	          materialsUseBUILD1 *
+	          unitPriceMaterials
+	        );
+        case Build2:
+	         return (
+	          priceBUILD2 +
+	          foodUseBUILD2 *
+	          unitPriceFood +
+	          energyUseBUILD2 *
+	          unitPriceEnergy +
+	          materialsUseBUILD2 *
+	          unitPriceMaterials
+	        );
+	      default: return 0;
+	       
+	    }
+	  }
+
+
     public LinkedList<Node> expandNode(Node currNode) {
         LinkedList<Node> children = new LinkedList<>();
+        this.nodesExpandedCounter++;
 
         // System.out.println(".........................................");
         // System.out.println("Node Operator in expansion " + currNode.getOperator());
