@@ -16,13 +16,10 @@ public class SearchAlgorithms {
                 problem.printNodeExpansion(expandedNodes);
             }
             for (Node topNode : expandedNodes) {
-                System.out.println("iiiii");
                 problem.queue.addLast(topNode);
             }
-            
-            //problem.printQueue();
             System.out.println("New queue size " + problem.queue.size());
-            problem.printQueue();
+            // problem.printQueue();
         } catch (Exception e) {
             System.err.println("Error in BF algorithm " + e.getMessage());
         }
