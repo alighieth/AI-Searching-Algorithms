@@ -10,8 +10,6 @@ public class GenericSearch {
             return null;
         }
         while(!problem.queue.isEmpty()) {
-            problem.iterations++;
-            System.out.println("Num iterations " + problem.iterations);
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
             System.out.println("Head node " + headNode.getOperator() + " " + headNode.toString());

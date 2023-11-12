@@ -22,7 +22,6 @@ public class SearchProblem {
         REQUEST_MATERIALS
     }
 
-    public int iterations = 0;
     public LinkedList<Node> queue;
     private Node root;
     public Node currentNode;
@@ -35,7 +34,6 @@ public class SearchProblem {
     public int priceBUILD1, materialsUseBUILD1, energyUseBUILD1;
     public int priceBUILD2, materialsUseBUILD2, energyUseBUILD2;
     public static int prosperityBUILD1, prosperityBUILD2, foodUseBUILD1, foodUseBUILD2;
-    public int nodesCounter = 0;
     public SearchAlgorithms strategy;
     public boolean visualize;
     public int nodesExpandedCounter = 0;
@@ -86,7 +84,7 @@ public class SearchProblem {
                 initialMaterials,
                 initialEnergy,
                 0);
-        this.root = new Node(initialState, null, null, 0, 0, 0, 0, null);
+        this.root = new Node(initialState, null, null, 0, 0, 0, null);
         this.queue.add(root);
         this.strategy = strategy;
     }
@@ -188,7 +186,7 @@ public class SearchProblem {
         newNodeState.money_spent = Math.min(parentNode.getState().money_spent + calculateActionCost(deliveryoOperator), 50);
 
         int depth = parentNode.getDepth() + 1;
-        Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, 0, delivery);
+        Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, delivery);
         newNode.delivery = delivery;
         return newNode;
     }
@@ -204,7 +202,7 @@ public class SearchProblem {
 
         int depth = parentNode.getDepth() + 1;
 
-        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build1, depth, 0, 0, 0, parentNode.delivery);
+        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build1, depth, 0, 0, parentNode.delivery);
         return newNode;
     }
 
@@ -218,7 +216,7 @@ public class SearchProblem {
         newNodeState.money_spent += calculateActionCost(Operators.Build2);
         
         int depth = parentNode.getDepth() + 1;
-        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, 0, parentNode.delivery);
+        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, parentNode.delivery);
         return newNode;
     }
 
@@ -248,7 +246,7 @@ public class SearchProblem {
         newNodeState.money_spent = Math.min(newNodeState.money_spent + calculateActionCost(Operators.WAIT), 50);
         
         int depth = parentNode.getDepth() + 1;
-        Node nodeWithDelivery = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, 0, parentNode.delivery);
+        Node nodeWithDelivery = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, parentNode.delivery);
 
         return handleDeliveries(nodeWithDelivery);
     }
