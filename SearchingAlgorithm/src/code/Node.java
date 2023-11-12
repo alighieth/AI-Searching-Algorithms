@@ -12,7 +12,7 @@ public class Node {
     private int heuristic2;
 
     public Node(NodeState state, Node parent, SearchProblem.Operators operator, int depth, int pathCost, int heuristic1,
-            int heuristic2) {
+            int heuristic2, RequestDelivery delivery) {
         this.state = state;
         this.parent = parent;
         this.operator = operator;
@@ -20,7 +20,7 @@ public class Node {
         this.pathCost = pathCost;
         this.heuristic1 = heuristic1;
         this.heuristic2 = heuristic2;
-        this.delivery = null;
+        this.delivery = delivery;
     }
 
     public NodeState getState() {

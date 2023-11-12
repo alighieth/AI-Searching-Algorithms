@@ -86,7 +86,7 @@ public class SearchProblem {
                 initialMaterials,
                 initialEnergy,
                 0);
-        this.root = new Node(initialState, null, null, 0, 0, 0, 0);
+        this.root = new Node(initialState, null, null, 0, 0, 0, 0, null);
         this.queue.add(root);
         this.strategy = strategy;
     }
@@ -187,21 +187,8 @@ public class SearchProblem {
         newNodeState.money_spent = Math.min(newNodeState.money_spent + calculateActionCost(deliveryoOperator), 50);
 
         int depth = parentNode.getState().depth + 1;
-        Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, 0);
+        Node newNode = new Node(newNodeState, parentNode, deliveryoOperator, depth, 0, 0, 0, delivery);
         newNode.delivery = delivery;
-        return newNode;
-    }
-
-    public Node wait(Node parentNode) {
-        NodeState newNodeState = parentNode.getState();
-        newNodeState.energy--;
-        newNodeState.food--;
-        newNodeState.materials--;
-        newNodeState.money_spent = Math.min(newNodeState.money_spent + calculateActionCost(Operators.WAIT), 50);
-
-        int depth = parentNode.getState().depth + 1;
-        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, 0);
-        handleDeliveries(newNode);
         return newNode;
     }
 
@@ -216,7 +203,7 @@ public class SearchProblem {
 
         int depth = parentNode.getState().depth + 1;
 
-        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build1, depth, 0, 0, 0);
+        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build1, depth, 0, 0, 0, parentNode.delivery);
         return newNode;
     }
 
@@ -230,7 +217,7 @@ public class SearchProblem {
         newNodeState.money_spent += calculateActionCost(Operators.Build2);
         
         int depth = parentNode.getState().depth + 1;
-        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, 0);
+        Node newNode = new Node(newNodeState, parentNode, SearchProblem.Operators.Build2, depth, 0, 0, 0, parentNode.delivery);
         return newNode;
     }
 
@@ -252,28 +239,38 @@ public class SearchProblem {
         return false;
     }
 
-    public void handleDeliveries(Node currNode) {
-        if (currNode.delivery == null) {
-            return;
+    public Node wait(Node parentNode) {
+        NodeState newNodeState = parentNode.getState();
+        newNodeState.energy--;
+        newNodeState.food--;
+        newNodeState.materials--;
+        newNodeState.money_spent = Math.min(newNodeState.money_spent + calculateActionCost(Operators.WAIT), 50);
+        
+        int depth = parentNode.getState().depth + 1;
+        Node nodeWithDelivery = new Node(newNodeState, parentNode, SearchProblem.Operators.WAIT, depth, 0, 0, 0, parentNode.delivery);
+
+        return handleDeliveries(nodeWithDelivery);
+    }
+
+    public Node handleDeliveries(Node nodeWithDelivery) {
+        if (nodeWithDelivery.delivery == null || nodeWithDelivery.delivery.delay == 0) {
+           return nodeWithDelivery;
         }
         // A price of a resource is paid when the resource is used not when requested.
-        currNode.delivery.delay--;
-        if (currNode.delivery.delay == 0) {
-            NodeState nodeState = currNode.getState();
-
-            if (currNode.delivery.type.equals(RequestDelivery.deliveryType.FOOD) && nodeState.food < 50) {
-                nodeState.food += currNode.delivery.amount;
-                nodeState.food = nodeState.food >= 50 ? 50 : nodeState.food;
-            } else if (currNode.delivery.type.equals(RequestDelivery.deliveryType.ENERGY) && nodeState.energy < 50) {
-                nodeState.energy += currNode.delivery.amount;
-                nodeState.energy = nodeState.energy >= 50 ? 50 : nodeState.energy;
-            } else if (currNode.delivery.type.equals(RequestDelivery.deliveryType.MATERIALS) && nodeState.materials < 50) {
-                nodeState.materials += currNode.delivery.amount;
-                nodeState.materials = nodeState.materials >= 50 ? 50 : nodeState.materials;
+        nodeWithDelivery.delivery.delay--;
+        if (nodeWithDelivery.delivery.delay == 0) {
+            NodeState nodeState = nodeWithDelivery.getState();
+            System.out.println("dELIVERY DELAY DONE ");
+            if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.FOOD) ) {
+                nodeState.food += Math.min(nodeState.energy + nodeWithDelivery.delivery.amount, 50); 
+            } else if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.ENERGY)  ) {
+                nodeState.energy = Math.min(nodeState.energy + nodeWithDelivery.delivery.amount, 50);
+            } else if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.MATERIALS))  {
+                nodeState.materials += Math.min(nodeState.energy + nodeWithDelivery.delivery.amount, 50); 
             }
-
+            nodeWithDelivery.delivery = null;
         }
-        currNode.delivery = null;
+        return nodeWithDelivery;
     }
 
     public Node getRoot() {
@@ -344,8 +341,10 @@ public class SearchProblem {
             possibleOperators.addLast(SearchProblem.Operators.Build2);
         }
 
-        if (currentNode.delivery != null && currentNode.getOperator() != null && isOperatorValid(currentNode, Operators.WAIT)) {
-            possibleOperators.addLast(SearchProblem.Operators.WAIT);
+        if ((currentNode.delivery != null && currentNode.delivery.delay > 0) && currentNode.getOperator() != null) {
+            if(isOperatorValid(currentNode, Operators.WAIT)) {
+                possibleOperators.addLast(SearchProblem.Operators.WAIT);
+            }
         } else if (currentNode.getOperator() == null || currentNode.delivery == null) {
             if(isOperatorValid(currentNode, Operators.REQUEST_ENERGY)) {
                 possibleOperators.addLast(SearchProblem.Operators.REQUEST_ENERGY);
