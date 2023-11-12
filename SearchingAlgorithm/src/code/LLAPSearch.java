@@ -71,12 +71,12 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-        String initialState0 = "17;" +
-                "49,30,46;" +
-                "7,57,6;" +
-                "7,1;20,2;29,2;" +
-                "350,10,9,8,28;" +
-                "408,8,12,13,34;";
+        String initialState0 = "50;" +
+        "12,12,12;" +
+        "50,60,70;" +
+        "30,2;19,2;15,2;" +
+        "300,5,7,3,20;" +
+        "500,8,6,3,40;";
 
         // "50;" +
         // "22,22,22;" +
