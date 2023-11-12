@@ -1,4 +1,5 @@
 package code;
+
 public class LLAPSearch extends GenericSearch {
     public static String solve(String initalState, String strategy, boolean visualize) {
         GenericSearch gs = new GenericSearch();
@@ -61,7 +62,8 @@ public class LLAPSearch extends GenericSearch {
         if (goalNode == null) {
             result = "NOSOLUTION";
         } else {
-            result = goalNode.getPathToGoal(visualize) + ";" + goalNode.getState().money_spent + ";" + problem.nodesExpandedCounter;
+            result = goalNode.getPathToGoal(visualize) + ";" + goalNode.getState().money_spent + ";"
+                    + problem.nodesExpandedCounter;
         }
         System.out.println("");
         System.out.println(result);
@@ -76,12 +78,12 @@ public class LLAPSearch extends GenericSearch {
                 "350,10,9,8,28;" +
                 "408,8,12,13,34;";
 
-                // "50;" +
-                // "22,22,22;" +
-                // "50,60,70;" +
-                // "30,2;19,1;15,1;" +
-                // "300,5,7,3,20;" +
-                // "500,8,6,3,40;"
+        // "50;" +
+        // "22,22,22;" +
+        // "50,60,70;" +
+        // "30,2;19,1;15,1;" +
+        // "300,5,7,3,20;" +
+        // "500,8,6,3,40;"
         LLAPSearch.solve(initialState0, "BF", false);
     }
 }
