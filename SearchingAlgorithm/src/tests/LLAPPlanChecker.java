@@ -285,7 +285,7 @@ public boolean applyPlan(String grid, String solution){
 	linkin = tryPlan(actions,s);
 	if(!linkin) {
 		return false;
-		}
+	}
 
     return s.cool() && s.v12 ==blue;
 }

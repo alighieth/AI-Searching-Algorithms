@@ -1,4 +1,5 @@
 package code;
+import java.util.HashSet;
 import java.util.LinkedList;
 
 public class SearchProblem {
@@ -37,14 +38,29 @@ public class SearchProblem {
     public SearchAlgorithms strategy;
     public boolean visualize;
     public int nodesExpandedCounter = 0;
+    HashSet<String> visitedStates;
 
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
         this.queue = new LinkedList<>();
         this.visualize = visualize;
         setAttributesFromString(inputString);
         if (visualize) {
+            printAttr();
+        }
+        NodeState initialState = new NodeState(
+                initialProsperity,
+                initialFood,
+                initialMaterials,
+                initialEnergy,
+                0);
+        this.root = new Node(initialState, null, null, 0, 0, 0, null);
+        this.queue.add(root);
+        this.strategy = strategy;
+        this.visitedStates = new HashSet<>();
+    }
 
-            System.out.println();
+    public void printAttr() {
+         System.out.println();
             System.out.println("Initial Conditions:");
             System.out.println("-----------------------");
             System.out.println("initialProsperity: " + initialProsperity);
@@ -77,16 +93,6 @@ public class SearchProblem {
             System.out.println("energyUseBUILD2: " + energyUseBUILD2);
             System.out.println("prosperityBUILD2: " + prosperityBUILD2);
             System.out.println("-------------------------------------------");
-        }
-        NodeState initialState = new NodeState(
-                initialProsperity,
-                initialFood,
-                initialMaterials,
-                initialEnergy,
-                0);
-        this.root = new Node(initialState, null, null, 0, 0, 0, null);
-        this.queue.add(root);
-        this.strategy = strategy;
     }
 
     public void setAttributesFromString(String inputString) {
@@ -138,11 +144,22 @@ public class SearchProblem {
     public LinkedList<Node> applyOperators(LinkedList<SearchProblem.Operators> pOperators, Node parentNode) {
         LinkedList<Node> operatorNodes = new LinkedList<>();
 
+        if(parentNode.getState().money_spent > 100000) {
+            return operatorNodes;
+        }
         for (SearchProblem.Operators operator : pOperators) {
             if (operator.equals(Operators.REQUEST_ENERGY)) {
-                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.ENERGY, parentNode));
+                Node newNode = requestDelivery(RequestDelivery.deliveryType.ENERGY, parentNode);
+                if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                    operatorNodes.add(newNode);
+                    visitedStates.add(newNode.getStringRepresentation());
+                }
             } else if (operator.equals(Operators.REQUEST_FOOD)) {
-                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.FOOD, parentNode));
+                Node newNode = requestDelivery(RequestDelivery.deliveryType.FOOD, parentNode);
+                 if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                    operatorNodes.add(newNode);
+                    visitedStates.add(newNode.getStringRepresentation());
+                }
             } else if (operator.equals(Operators.REQUEST_MATERIALS)) {
                 operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.MATERIALS, parentNode));
             } else if (operator.equals(Operators.Build1)) {
@@ -262,11 +279,11 @@ public class SearchProblem {
             NodeState nodeState = nodeWithDelivery.getState();
             System.out.println("dELIVERY DELAY DONE ");
             if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.FOOD) ) {
-                nodeState.food += Math.min(nodeState.energy + nodeWithDelivery.delivery.amount, 50); 
+                nodeState.food = Math.min(nodeState.food + nodeWithDelivery.delivery.amount, 50); 
             } else if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.ENERGY)  ) {
                 nodeState.energy = Math.min(nodeState.energy + nodeWithDelivery.delivery.amount, 50);
             } else if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.MATERIALS))  {
-                nodeState.materials += Math.min(nodeState.energy + nodeWithDelivery.delivery.amount, 50); 
+                nodeState.materials = Math.min(nodeState.materials + nodeWithDelivery.delivery.amount, 50); 
             }
             nodeWithDelivery.delivery = null;
         }

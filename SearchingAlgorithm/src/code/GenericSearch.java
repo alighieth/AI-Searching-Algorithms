@@ -14,12 +14,6 @@ public class GenericSearch {
             problem.currentNode = headNode;
             System.out.println("Head node " + headNode.getOperator() + " " + headNode.toString());
 
-            if(problem.visualize) {
-                NodeState nodeState = headNode.getState();
-                System.out.println("......." + "GenericSearch DEQUEUE" + ".......");
-                System.out.println("Current dequeued node state -> " + nodeState.toString());
-            }
-
             if (isGoalState(headNode)) {
                 return headNode;
             } else {

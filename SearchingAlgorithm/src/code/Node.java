@@ -77,7 +77,7 @@ public class Node {
                     result += "BUILD2,";
                     break;
             }
-            
+            //result += topNode.toString() + "\n";
             if (visualize)
             {
                 SearchProblem.Operators op = topNode.getOperator();
@@ -94,6 +94,10 @@ public class Node {
     }
 
     public String toString() {
-    	return " ,Food " + state.food + " ,Energy " + state.energy + " ,Materials " + state.materials + " ,Depth " + depth + " ,Prosperity " + state.prosperity;
+    	return "Food " + state.food + " ,Energy " + state.energy + " ,Materials " + state.materials + " ,Depth " + depth + " ,Prosperity " + state.prosperity;
     }
+
+    public String getStringRepresentation() {
+        return String.format("%d-%d-%d-%d-%d-%s", state.food, state.energy, state.materials, state.prosperity, delivery == null ? "0" : delivery.delay, delivery == null ? "0" : delivery.type.name());
+    } 
 }
