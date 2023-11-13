@@ -72,13 +72,13 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-        String initialState0 =  "30;" +
-        "30,25,19;" +
-        "90,120,150;" +
-        "9,2;13,1;11,1;" +
-        "3195,11,12,10,34;" +
-        "691,7,8,6,15;";
+        String initialState0 = "21;" +
+        "15,19,13;" +
+        "50,50,50;" +
+        "12,2;16,2;9,2;" +
+        "3076,15,26,28,40;" +
+        "5015,25,15,15,38;";
 
-        LLAPSearch.solve(initialState0, "BF", true);
+        LLAPSearch.solve(initialState0, "DF", true);
     }
 }

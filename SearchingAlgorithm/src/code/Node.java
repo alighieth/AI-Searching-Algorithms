@@ -41,12 +41,6 @@ public class Node {
             stack.push(node);
             node = node.getParent();
         }
-        
-        if (visualize) {
-	    	System.out.println("State: " + node.getState());
-	    	System.out.println("Money_Spent: " + node.getState().money_spent);
-	    	System.out.println("----------------------------------");
-        }
     	
         while (!stack.isEmpty()) {
         	Node topNode = stack.pop();
@@ -98,6 +92,6 @@ public class Node {
     }
 
     public String getStringRepresentation() {
-        return String.format("%d-%d-%d-%d-%d-%s", state.food, state.energy, state.materials, state.prosperity, delivery == null ? "0" : delivery.delay, delivery == null ? "0" : delivery.type.name());
+        return String.format("%d-%d-%d-%d-%d-%s", state.food, state.energy, state.materials, state.prosperity, delivery == null ? 0 : delivery.delay, delivery == null ? "0" : delivery.type.name());
     } 
 }

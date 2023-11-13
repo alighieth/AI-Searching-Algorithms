@@ -144,34 +144,58 @@ public class SearchProblem {
     public LinkedList<Node> applyOperators(LinkedList<SearchProblem.Operators> pOperators, Node parentNode) {
         LinkedList<Node> operatorNodes = new LinkedList<>();
 
-        if(parentNode.getState().money_spent > 100000) {
-            return operatorNodes;
-        }
+        try {
+
+        
         for (SearchProblem.Operators operator : pOperators) {
-            if (operator.equals(Operators.REQUEST_ENERGY)) {
-                Node newNode = requestDelivery(RequestDelivery.deliveryType.ENERGY, parentNode);
-                if(!visitedStates.contains(newNode.getStringRepresentation())) {
-                    operatorNodes.add(newNode);
-                    visitedStates.add(newNode.getStringRepresentation());
+            if(parentNode.getState().money_spent + calculateActionCost(operator) <= 100000) {
+                if (operator.equals(Operators.REQUEST_ENERGY)) {
+                    Node newNode = requestDelivery(RequestDelivery.deliveryType.ENERGY, parentNode);
+                    if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                        operatorNodes.add(newNode);
+                        visitedStates.add(newNode.getStringRepresentation());
+                    }
+                } else if (operator.equals(Operators.REQUEST_FOOD)) {
+                    Node newNode = requestDelivery(RequestDelivery.deliveryType.FOOD, parentNode);
+                    if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                        operatorNodes.add(newNode);
+                        visitedStates.add(newNode.getStringRepresentation());
+                    }
+                } else if (operator.equals(Operators.REQUEST_MATERIALS)) {
+                    Node newNode = requestDelivery(RequestDelivery.deliveryType.MATERIALS, parentNode);
+                    if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                        operatorNodes.add(newNode);
+                        visitedStates.add(newNode.getStringRepresentation());
+                    }
+                } else if (operator.equals(Operators.Build1)) {
+                    Node newNode = build1(parentNode);
+                    if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                        operatorNodes.add(newNode);
+                        visitedStates.add(newNode.getStringRepresentation());
+                    }
+                } else if (operator.equals(Operators.Build2)) {
+                    Node newNode = build2(parentNode);
+                    if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                        operatorNodes.add(newNode);
+                        visitedStates.add(newNode.getStringRepresentation());
+                    }
+                } else if (operator.equals(Operators.WAIT)) {
+                    Node newNode = wait(parentNode);
+                    if(!visitedStates.contains(newNode.getStringRepresentation())) {
+                        operatorNodes.add(newNode);
+                        visitedStates.add(newNode.getStringRepresentation());
+                    }
                 }
-            } else if (operator.equals(Operators.REQUEST_FOOD)) {
-                Node newNode = requestDelivery(RequestDelivery.deliveryType.FOOD, parentNode);
-                 if(!visitedStates.contains(newNode.getStringRepresentation())) {
-                    operatorNodes.add(newNode);
-                    visitedStates.add(newNode.getStringRepresentation());
-                }
-            } else if (operator.equals(Operators.REQUEST_MATERIALS)) {
-                operatorNodes.add(requestDelivery(RequestDelivery.deliveryType.MATERIALS, parentNode));
-            } else if (operator.equals(Operators.Build1)) {
-                operatorNodes.add(build1(parentNode));
-            } else if (operator.equals(Operators.Build2)) {
-                operatorNodes.add(build2(parentNode));
-            } else if (operator.equals(Operators.WAIT)) {
-                operatorNodes.add(wait(parentNode));
             }
+            
         }
 
         return operatorNodes;
+
+        } catch (Exception e) {
+
+            return operatorNodes;
+        }
     }
 
     public Node requestDelivery(RequestDelivery.deliveryType deliveryType, Node parentNode) {
@@ -277,7 +301,6 @@ public class SearchProblem {
         nodeWithDelivery.delivery.delay--;
         if (nodeWithDelivery.delivery.delay == 0) {
             NodeState nodeState = nodeWithDelivery.getState();
-            System.out.println("dELIVERY DELAY DONE ");
             if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.FOOD) ) {
                 nodeState.food = Math.min(nodeState.food + nodeWithDelivery.delivery.amount, 50); 
             } else if (nodeWithDelivery.delivery.type.equals(RequestDelivery.deliveryType.ENERGY)  ) {
@@ -329,12 +352,6 @@ public class SearchProblem {
 
     public LinkedList<Node> expandNode(Node currNode) {
         LinkedList<Node> children = new LinkedList<>();
-        // System.out.println(".........................................");
-        // System.out.println("Node Operator in expansion " + currNode.getOperator());
-        // System.out.println("Initial Food " + currNode.getState().food);
-        // System.out.println("Initial Energy " + currNode.getState().energy);
-        // System.out.println("Initial Materials " + currNode.getState().materials);
-        // System.out.println(".........................................");
 
         if (currNode.getState().energy < 1 || currNode.getState().food < 1 || currNode.getState().materials < 1)
             return children;
@@ -427,20 +444,5 @@ public class SearchProblem {
         return strategyAlgo;
     }
 
-    public void printNodeExpansion(LinkedList<Node> nodeExp) {
-        for (Node node : nodeExp) {
-            System.out.println("Node expansion operator " + node.getOperator());
-        }
-    }
-
-    public void printQueue() {
-        if(queue.size() > 20 ) return;
-        System.out.println("***************************");
-        for(int i = 0; i < this.queue.size(); i++) {
-            Node dequedNode = queue.removeFirst();
-            System.out.println("Node at index " + i + " has an action " + dequedNode.getOperator() + " with depth " + dequedNode.getDepth()) ;
-            queue.addLast(dequedNode);
-        }
-        System.out.println("***************************");
-    }
+    
 }

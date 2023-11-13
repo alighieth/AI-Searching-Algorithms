@@ -7,9 +7,7 @@ public class SearchAlgorithms {
     static void breadthFirstSearch(SearchProblem problem, Node parentNode) {
         try {
             LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
-            if (problem.visualize) {
-                problem.printNodeExpansion(expandedNodes);
-            }
+           
             for (Node topNode : expandedNodes) {
                 problem.queue.addLast(topNode);
             }

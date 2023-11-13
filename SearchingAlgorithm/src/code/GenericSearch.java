@@ -12,8 +12,6 @@ public class GenericSearch {
         while(!problem.queue.isEmpty()) {
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
-            System.out.println("Head node " + headNode.getOperator() + " " + headNode.toString());
-
             if (isGoalState(headNode)) {
                 return headNode;
             } else {

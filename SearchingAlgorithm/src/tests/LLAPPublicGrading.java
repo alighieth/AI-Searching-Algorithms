@@ -143,20 +143,20 @@ public class LLAPPublicGrading {
 		LLAPPlanChecker pc = new LLAPPlanChecker(initialState8);
 		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState8, solution));
 	}
-	// @Test(timeout = 120000)
-	// public void testa9() throws Exception {
-	// 	String solution = LLAPSearch.solve(initialState9, "BF", false);
-	// 	solution = solution.replace(" ", "");
-	// 	LLAPPlanChecker pc = new LLAPPlanChecker(initialState9);
-	// 	assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState9, solution));
-	// }
-	// @Test(timeout = 120000)
-	// public void testa10() throws Exception {
-	// 	String solution = LLAPSearch.solve(initialState10, "BF", false);
-	// 	solution = solution.replace(" ", "");
-	// 	LLAPPlanChecker pc = new LLAPPlanChecker(initialState10);
-	// 	assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState10, solution));
-	// }
+	@Test(timeout = 120000)
+	public void testa9() throws Exception {
+		String solution = LLAPSearch.solve(initialState9, "BF", false);
+		solution = solution.replace(" ", "");
+		LLAPPlanChecker pc = new LLAPPlanChecker(initialState9);
+		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState9, solution));
+	}
+	@Test(timeout = 120000)
+	public void testa10() throws Exception {
+		String solution = LLAPSearch.solve(initialState10, "BF", false);
+		solution = solution.replace(" ", "");
+		LLAPPlanChecker pc = new LLAPPlanChecker(initialState10);
+		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState10, solution));
+	}
 
 
 	@Test(timeout = 120000)
@@ -187,13 +187,13 @@ public class LLAPPublicGrading {
 		LLAPPlanChecker pc = new LLAPPlanChecker(initialState3);
 		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState3, solution));
 	}
-	// @Test(timeout = 120000)
-	// public void testb4() throws Exception {
-	// 	String solution = LLAPSearch.solve(initialState4, "DF", false);
-	//     solution = solution.replace(" ", "");
-	//     LLAPPlanChecker pc = new LLAPPlanChecker(initialState4);
-	// 	assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState4, solution));
-	// }
+	@Test(timeout = 120000)
+	public void testb4() throws Exception {
+		String solution = LLAPSearch.solve(initialState4, "DF", false);
+	    solution = solution.replace(" ", "");
+	    LLAPPlanChecker pc = new LLAPPlanChecker(initialState4);
+		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState4, solution));
+	}
 	@Test(timeout = 120000)
 	public void testb5() throws Exception {
 		String solution = LLAPSearch.solve(initialState5, "DF", false);
@@ -222,20 +222,20 @@ public class LLAPPublicGrading {
 		LLAPPlanChecker pc = new LLAPPlanChecker(initialState8);
 		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState8, solution));
 	}
-	// @Test(timeout = 120000)
-	// public void testb9() throws Exception {
-	// 	String solution = LLAPSearch.solve(initialState9, "DF", false);
-	// 	solution = solution.replace(" ", "");
-	// 	LLAPPlanChecker pc = new LLAPPlanChecker(initialState9);
-	// 	assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState9, solution));
-	// }
-	// @Test(timeout = 120000)
-	// public void testb10() throws Exception {
-	// 	String solution = LLAPSearch.solve(initialState10, "DF", false);
-	// 	solution = solution.replace(" ", "");
-	// 	LLAPPlanChecker pc = new LLAPPlanChecker(initialState10);
-	// 	assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState10, solution));
-	// }
+	@Test(timeout = 120000)
+	public void testb9() throws Exception {
+		String solution = LLAPSearch.solve(initialState9, "DF", false);
+		solution = solution.replace(" ", "");
+		LLAPPlanChecker pc = new LLAPPlanChecker(initialState9);
+		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState9, solution));
+	}
+	@Test(timeout = 120000)
+	public void testb10() throws Exception {
+		String solution = LLAPSearch.solve(initialState10, "DF", false);
+		solution = solution.replace(" ", "");
+		LLAPPlanChecker pc = new LLAPPlanChecker(initialState10);
+		assertTrue("The output actions do not lead to a goal state.", pc.applyPlan(initialState10, solution));
+	}
 	// @Test(timeout = 120000)
 	// public void testc0() throws Exception {
 	// 	String solution = LLAPSearch.solve(initialState0, "UC", false);
