@@ -41,7 +41,7 @@ public class LLAPSearch extends GenericSearch {
 
         else if (SearchProblem.SearchAlgorithms.GR2.equals(searchAlgorithm)) {
             Q_INGFunc GR2CallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.greedySearch(searchProblem, parentNode, 0);
+                SearchAlgorithms.greedySearch2(searchProblem, parentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR2CallBack);
         }
@@ -55,7 +55,7 @@ public class LLAPSearch extends GenericSearch {
 
         else if (SearchProblem.SearchAlgorithms.AS2.equals(searchAlgorithm)) {
             Q_INGFunc AS2CallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.aStarSearch(searchProblem, parentNode, 0);
+                SearchAlgorithms.aStarSearch2(searchProblem, parentNode, 0);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         }
@@ -73,11 +73,11 @@ public class LLAPSearch extends GenericSearch {
 
     public static void main(String[] args) {
         String initialState0 = "21;" +
-        "15,19,13;" +
-        "50,50,50;" +
-        "12,2;16,2;9,2;" +
-        "3076,15,26,28,40;" +
-        "5015,25,15,15,38;";
+                "15,19,13;" +
+                "50,50,50;" +
+                "12,2;16,2;9,2;" +
+                "3076,15,26,28,40;" +
+                "5015,25,15,15,38;";
 
         LLAPSearch.solve(initialState0, "DF", true);
     }

@@ -1,4 +1,5 @@
 package code;
+
 interface Q_INGFunc {
     void onCallback(SearchProblem problem, Node parentNode);
 }
@@ -9,7 +10,7 @@ public class GenericSearch {
         if (problem.queue.isEmpty()) {
             return null;
         }
-        while(!problem.queue.isEmpty()) {
+        while (!problem.queue.isEmpty()) {
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;
             if (isGoalState(headNode)) {
@@ -18,11 +19,11 @@ public class GenericSearch {
                 callbackFunction.onCallback(problem, headNode);
             }
         }
-        
+
         return null;
     }
 
-    public boolean isGoalState(Node node) {
+    public static boolean isGoalState(Node node) {
         NodeState nodeState = node.getState();
         return nodeState.prosperity >= 100;
     }
