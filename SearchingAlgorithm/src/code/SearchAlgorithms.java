@@ -1,5 +1,6 @@
 package code;
 
+import java.util.Comparator;
 import java.util.LinkedList;
 
 public class SearchAlgorithms {
@@ -17,6 +18,7 @@ public class SearchAlgorithms {
     }
 
     static void depthFirstSearch(SearchProblem problem, Node parentNode) {
+        if(parentNode.getDepth() >= problem.cutOff && problem.strategy.equals(SearchProblem.SearchAlgorithms.ID)) return;
         LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
         for (int i = expandedNodes.size() - 1; i >= 0; i--) {
             problem.queue.addFirst(expandedNodes.get(i));
@@ -31,73 +33,73 @@ public class SearchAlgorithms {
         }
     }
 
-    // static void iterativeDeepeningSearch(SearchProblem problem, Node parentNode)
-    // {
-    // for (int depth = 0; depth < 2000; depth++) {
-    // LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
-
-    // for (Node child : expandedNodes) {
-    // problem.queue.addFirst(child);
-
-    // }
-    // }
-    // }
-    static void iterativeDeepeningSearch(SearchProblem problem, Node parentNode) {
-        int defaultMaxDepth = 50;
-        DeepeningSearch(problem, parentNode, defaultMaxDepth);
-    }
-
-    static void DeepeningSearch(SearchProblem problem, Node parentNode, int maxDepth) {
-        for (int depth = 0; depth <= maxDepth; depth++) {
-            recursiveDLS(problem, parentNode, depth);
-        }
-    }
-
-    static void recursiveDLS(SearchProblem problem, Node node, int depth) {
-        if (depth == 0) {
-            return;
-        }
-
-        LinkedList<Node> expandedNodes = problem.expandNode(node);
-
-        for (Node child : expandedNodes) {
-            problem.queue.addFirst(child);
-            recursiveDLS(problem, child, depth - 1);
-        }
-    }
-
     static void greedySearch(SearchProblem problem, Node parentNode, int heuristic) {
         LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
-        expandedNodes.sort((node1, node2) -> Integer.compare(heuristic(node1,
-                heuristic), heuristic(node2, heuristic)));
         problem.queue.addAll(expandedNodes);
+        problem.queue.sort((node1, node2) -> Integer.compare(node1.getHeuristicFunction1(), node2.getHeuristicFunction1()));
     }
 
     static void greedySearch2(SearchProblem problem, Node parentNode, int heuristic) {
         LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
-        expandedNodes.sort((node1, node2) -> Integer.compare(heuristic(node1,
-                heuristic), heuristic(node2, heuristic)));
         problem.queue.addAll(expandedNodes);
+        problem.queue.sort((node1, node2) -> Integer.compare(node1.getHeuristicFunction2(), node2.getHeuristicFunction2()));
     }
 
     static void aStarSearch(SearchProblem problem, Node parentNode, int heuristic) {
-        // LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
-        // expandedNodes.sort((node1, node2) -> Integer.compare(heuristic(node1,
-        // heuristic) + node1.getCost(),
-        // heuristic(node2, heuristic) + node2.getCost()));
-        // problem.queue.addAll(expandedNodes);
+        LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
+        problem.queue.addAll(expandedNodes);
+        expandedNodes.sort((node1, node2) -> Integer.compare(node1.getHeuristicFunction1() + node1.getState().money_spent + problem.calculateActionCost(node1.getOperator()), 
+                node2.getHeuristicFunction1() + node2.getState().money_spent + problem.calculateActionCost(node2.getOperator())));
     }
 
     static void aStarSearch2(SearchProblem problem, Node parentNode, int heuristic) {
-        // LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
-        // expandedNodes.sort((node1, node2) -> Integer.compare(heuristic(node1,
-        // heuristic) + node1.getCost(),
-        // heuristic(node2, heuristic) + node2.getCost()));
-        // problem.queue.addAll(expandedNodes);
+        //System.out.println("Expanded node " + parentNode.getOperator());
+        LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
+        problem.queue.addAll(expandedNodes);
+        problem.queue.sort((node1, node2) -> Integer.compare(node1.getHeuristicFunction2() + node1.getState().money_spent, 
+            node2.getHeuristicFunction2() + node2.getState().money_spent));
     }
 
-    static int heuristic(Node node, int heuristic) {
+    public static Comparator<Node> getComparatorBasedOnStrategy(SearchProblem.SearchAlgorithms strategy){
 
-        return heuristic;
+        if(strategy.equals(SearchProblem.SearchAlgorithms.GR1)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction1() - o2.getHeuristicFunction1();
+                }
+            };
+        }
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.GR2)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction2() - o2.getHeuristicFunction2();
+                }
+            };
+        } 
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.AS1)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction1() - o2.getHeuristicFunction1();
+                }
+            };
+        }
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.AS2)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction2() - o2.getHeuristicFunction2();
+                }
+            };
+        }
+
+        return new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return 1;
+            }
+        };
     }
 }

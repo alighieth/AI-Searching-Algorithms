@@ -94,4 +94,16 @@ public class Node {
     public String getStringRepresentation() {
         return String.format("%d-%d-%d-%d-%d-%s", state.food, state.energy, state.materials, state.prosperity, delivery == null ? 0 : delivery.delay, delivery == null ? "0" : delivery.type.name());
     } 
+
+    public int getHeuristicFunction1() {
+        return (int) (100 - this.state.prosperity) / Math.max(SearchProblem.prosperityBUILD1, SearchProblem.prosperityBUILD2);
+    }
+
+    public int getHeuristicFunction2() {
+        int remainingBuild1 =  (int) (100 - this.state.prosperity) / SearchProblem.prosperityBUILD1;
+        int remainingBuild2 =  (int) (100 - this.state.prosperity) / SearchProblem.prosperityBUILD2;
+        int foodNeeded_1 = Math.max(remainingBuild1 * SearchProblem.foodUseBUILD1 - this.state.food, 0);
+        int foodNeeded_2 = Math.max(remainingBuild2 * SearchProblem.foodUseBUILD2 - this.state.food, 0);
+        return Math.min(remainingBuild1 + foodNeeded_1, remainingBuild2 + foodNeeded_2);
+    }
 }

@@ -3,13 +3,13 @@ package code;
 interface Q_INGFunc {
     void onCallback(SearchProblem problem, Node parentNode);
 }
-
 public class GenericSearch {
 
     public Node GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
         if (problem.queue.isEmpty()) {
             return null;
         }
+
         while (!problem.queue.isEmpty()) {
             Node headNode = problem.queue.removeFirst();
             problem.currentNode = headNode;

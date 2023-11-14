@@ -1,6 +1,7 @@
 package code;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.PriorityQueue;
 
 public class SearchProblem {
     public enum SearchAlgorithms {
@@ -38,6 +39,7 @@ public class SearchProblem {
     public SearchAlgorithms strategy;
     public boolean visualize;
     public int nodesExpandedCounter = 0;
+    public int cutOff;
     HashSet<String> visitedStates;
 
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
@@ -57,6 +59,7 @@ public class SearchProblem {
         this.queue.add(root);
         this.strategy = strategy;
         this.visitedStates = new HashSet<>();
+        this.cutOff = -1;
     }
 
     public void printAttr() {
@@ -352,9 +355,9 @@ public class SearchProblem {
 
     public LinkedList<Node> expandNode(Node currNode) {
         LinkedList<Node> children = new LinkedList<>();
-
         if (currNode.getState().energy < 1 || currNode.getState().food < 1 || currNode.getState().materials < 1)
             return children;
+
         this.nodesExpandedCounter++;
         LinkedList<SearchProblem.Operators> possibleOperators = getPossibleOperators(currNode);
         children = applyOperators(possibleOperators, currNode);

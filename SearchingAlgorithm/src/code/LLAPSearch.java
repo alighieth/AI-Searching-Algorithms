@@ -13,18 +13,26 @@ public class LLAPSearch extends GenericSearch {
                 SearchAlgorithms.breadthFirstSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, BFCallBack);
-        } else if (SearchProblem.SearchAlgorithms.DF.equals(searchAlgorithm)) {
+        } 
+        else if (SearchProblem.SearchAlgorithms.DF.equals(searchAlgorithm)) {
             Q_INGFunc DFCallBack = (SearchProblem searchProblem, Node parentNode) -> {
                 SearchAlgorithms.depthFirstSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
         }
-
         else if (SearchProblem.SearchAlgorithms.ID.equals(searchAlgorithm)) {
-            Q_INGFunc IDCallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.iterativeDeepeningSearch(searchProblem, parentNode);
+            Q_INGFunc DFCallBack = (SearchProblem searchProblem, Node parentNode) -> {
+                SearchAlgorithms.depthFirstSearch(searchProblem, parentNode);
             };
-            goalNode = gs.GeneralSearchFuntion(problem, IDCallBack);
+
+            int cutoff = 0;
+            while (goalNode == null)
+            {
+                problem = new SearchProblem(initalState, searchAlgorithm, visualize);
+                problem.cutOff = cutoff;
+                goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
+                cutoff++;
+            }
         } else if (SearchProblem.SearchAlgorithms.UC.equals(searchAlgorithm)) {
             Q_INGFunc UCCallBack = (SearchProblem searchProblem, Node parentNode) -> {
                 SearchAlgorithms.uniformCostSearch(searchProblem, parentNode);
@@ -72,13 +80,13 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-        String initialState0 = "21;" +
-                "15,19,13;" +
-                "50,50,50;" +
-                "12,2;16,2;9,2;" +
-                "3076,15,26,28,40;" +
-                "5015,25,15,15,38;";
+        String initialState0  = "21;" +
+        "15,19,13;" +
+        "50,50,50;" +
+        "12,2;16,2;9,2;" +
+        "3076,15,26,28,40;" +
+        "5015,25,15,15,38;";
 
-        LLAPSearch.solve(initialState0, "DF", true);
+        LLAPSearch.solve(initialState0, "AS2", false);
     }
 }
