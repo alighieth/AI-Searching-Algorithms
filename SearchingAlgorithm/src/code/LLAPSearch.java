@@ -70,7 +70,6 @@ public class LLAPSearch extends GenericSearch {
         if (goalNode == null) {
             result = "NOSOLUTION";
         } else {
-            problem.printAttr();
             result = goalNode.getPathToGoal(visualize) + ";" + goalNode.getState().money_spent + ";"
                     + problem.nodesExpandedCounter;
         }
@@ -80,13 +79,16 @@ public class LLAPSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-        String initialState0  = "21;" +
-        "15,19,13;" +
-        "50,50,50;" +
-        "12,2;16,2;9,2;" +
-        "3076,15,26,28,40;" +
-        "5015,25,15,15,38;";
+
+        String initialState0  ="32;" +
+        "20,16,11;" +
+        "76,14,14;" +
+        "9,1;9,2;9,1;" +
+        "358,14,25,23,39;" +
+        "5024,20,17,17,38;";
 
         LLAPSearch.solve(initialState0, "BF", false);
+        Long rt = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+        System.out.println("rt "+ rt);
     }
 }

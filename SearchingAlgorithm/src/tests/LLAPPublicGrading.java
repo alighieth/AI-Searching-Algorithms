@@ -82,6 +82,8 @@ public class LLAPPublicGrading {
 
 	@Test(timeout = 120000)
 	public void testa0() throws Exception {
+		Long rt = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
+		System.out.println("rt " + rt);
 		String solution = LLAPSearch.solve(initialState0, "BF", false);
 		System.out.println("Soluction " + solution);
 		solution = solution.replace(" ", "");
