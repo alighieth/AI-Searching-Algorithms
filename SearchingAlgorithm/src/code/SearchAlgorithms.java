@@ -83,7 +83,7 @@ public class SearchAlgorithms {
     static void aStarSearch(SearchProblem problem, Node parentNode, int heuristic) {
         // LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
         // expandedNodes.sort((node1, node2) -> Integer.compare(heuristic(node1,
-        // heuristic) + node1.getpa(),
+        // heuristic) + node1.getCost(),
         // heuristic(node2, heuristic) + node2.getCost()));
         // problem.queue.addAll(expandedNodes);
     }
@@ -91,13 +91,13 @@ public class SearchAlgorithms {
     static void aStarSearch2(SearchProblem problem, Node parentNode, int heuristic) {
         // LinkedList<Node> expandedNodes = problem.expandNode(parentNode);
         // expandedNodes.sort((node1, node2) -> Integer.compare(heuristic(node1,
-        // heuristic) + node1.getpa(),
+        // heuristic) + node1.getCost(),
         // heuristic(node2, heuristic) + node2.getCost()));
         // problem.queue.addAll(expandedNodes);
     }
 
     static int heuristic(Node node, int heuristic) {
 
-        return 0;
+        return heuristic;
     }
 }
