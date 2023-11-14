@@ -269,7 +269,6 @@ public boolean applyPlan(String grid, String solution){
     if (solution.equals("nosolution")) {
         return false;
     }
-//    System.out.println(solution);
 	String[] solutionArray  = solution.split(";");
 	String plan = solutionArray[0];
 	int blue = Integer.parseInt(solutionArray[1]);

@@ -42,28 +42,28 @@ public class LLAPSearch extends GenericSearch {
 
         else if (SearchProblem.SearchAlgorithms.GR1.equals(searchAlgorithm)) {
             Q_INGFunc GR1CallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.greedySearch(searchProblem, parentNode, 0);
+                SearchAlgorithms.greedySearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR1CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.GR2.equals(searchAlgorithm)) {
             Q_INGFunc GR2CallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.greedySearch2(searchProblem, parentNode, 0);
+                SearchAlgorithms.greedySearch2(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, GR2CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.AS1.equals(searchAlgorithm)) {
             Q_INGFunc AS1CallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.aStarSearch(searchProblem, parentNode, 0);
+                SearchAlgorithms.aStarSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS1CallBack);
         }
 
         else if (SearchProblem.SearchAlgorithms.AS2.equals(searchAlgorithm)) {
             Q_INGFunc AS2CallBack = (SearchProblem searchProblem, Node parentNode) -> {
-                SearchAlgorithms.aStarSearch2(searchProblem, parentNode, 0);
+                SearchAlgorithms.aStarSearch2(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         }
@@ -87,6 +87,6 @@ public class LLAPSearch extends GenericSearch {
         "3076,15,26,28,40;" +
         "5015,25,15,15,38;";
 
-        LLAPSearch.solve(initialState0, "AS2", false);
+        LLAPSearch.solve(initialState0, "BF", false);
     }
 }

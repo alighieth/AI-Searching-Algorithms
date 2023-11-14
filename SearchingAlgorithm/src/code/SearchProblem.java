@@ -25,8 +25,7 @@ public class SearchProblem {
         REQUEST_MATERIALS
     }
 
-    public LinkedList<Node> queue;
-    public PriorityQueue<Node> priorityQueue;
+    public PriorityQueue<Node> queue;
     private Node root;
     public Node currentNode;
     public int initialProsperity;
@@ -45,8 +44,7 @@ public class SearchProblem {
     HashSet<String> visitedStates;
 
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
-        this.queue = new LinkedList<>();
-        this.priorityQueue = new PriorityQueue<Node>(SearchProblem.getComparatorBasedOnStrategy(strategy));
+        this.queue = new PriorityQueue<Node>(SearchProblem.getComparatorBasedOnStrategy(strategy));
         this.visualize = visualize;
         setAttributesFromString(inputString);
         if (visualize) {
@@ -60,15 +58,7 @@ public class SearchProblem {
                 0);
         this.root = new Node(initialState, null, null, 0, 0, 0, null);
         this.strategy = strategy;
-
-        if(strategy.equals(SearchProblem.SearchAlgorithms.AS1) || 
-            strategy.equals(SearchProblem.SearchAlgorithms.AS2) || strategy.equals(SearchProblem.SearchAlgorithms.GR1) 
-                || strategy.equals(SearchProblem.SearchAlgorithms.GR2)) {
-            this.priorityQueue.add(root);
-        } else {
-            this.queue.add(root);       
-        }
-        
+        this.queue.add(root);
         this.visitedStates = new HashSet<>();
         this.cutOff = -1;
     }
@@ -366,8 +356,6 @@ public class SearchProblem {
 
     public LinkedList<Node> expandNode(Node currNode) {
         LinkedList<Node> children = new LinkedList<>();
-        if (currNode.getState().energy < 1 || currNode.getState().food < 1 || currNode.getState().materials < 1)
-            return children;
 
         this.nodesExpandedCounter++;
         LinkedList<SearchProblem.Operators> possibleOperators = getPossibleOperators(currNode);
@@ -492,11 +480,27 @@ public class SearchProblem {
                 }
             };
         }
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.UC)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o2.getState().money_spent - o1.getState().money_spent;
+                }
+            };
+        } 
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.DF)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getDepth() - o2.getDepth();
+                }
+            };
+        } 
 
         return new Comparator<Node>() {
             @Override
             public int compare(Node o1, Node o2) {
-                return 1;
+                return o1.getDepth() - o2.getDepth();
             }
         };
     }
