@@ -6,12 +6,15 @@ interface Q_INGFunc {
 public class GenericSearch {
 
     public Node GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
-        if (problem.queue.isEmpty()) {
-            return null;
-        }
-
-        while (!problem.queue.isEmpty()) {
-            Node headNode = problem.queue.removeFirst();
+        while (!problem.queue.isEmpty() || !problem.priorityQueue.isEmpty()) {
+            Node headNode = null;
+            if(problem.strategy.equals(SearchProblem.SearchAlgorithms.AS1) || 
+            problem.strategy.equals(SearchProblem.SearchAlgorithms.AS2) || problem.strategy.equals(SearchProblem.SearchAlgorithms.GR1) 
+             || problem.strategy.equals(SearchProblem.SearchAlgorithms.GR2)) {
+                headNode = problem.priorityQueue.remove();
+            } else {
+                headNode = problem.queue.removeFirst();
+            }
             problem.currentNode = headNode;
             if (isGoalState(headNode)) {
                 return headNode;

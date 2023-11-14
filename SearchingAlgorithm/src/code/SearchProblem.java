@@ -1,4 +1,5 @@
 package code;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
@@ -25,6 +26,7 @@ public class SearchProblem {
     }
 
     public LinkedList<Node> queue;
+    public PriorityQueue<Node> priorityQueue;
     private Node root;
     public Node currentNode;
     public int initialProsperity;
@@ -44,6 +46,7 @@ public class SearchProblem {
 
     public SearchProblem(String inputString, SearchAlgorithms strategy, boolean visualize) {
         this.queue = new LinkedList<>();
+        this.priorityQueue = new PriorityQueue<Node>(SearchProblem.getComparatorBasedOnStrategy(strategy));
         this.visualize = visualize;
         setAttributesFromString(inputString);
         if (visualize) {
@@ -56,8 +59,16 @@ public class SearchProblem {
                 initialEnergy,
                 0);
         this.root = new Node(initialState, null, null, 0, 0, 0, null);
-        this.queue.add(root);
         this.strategy = strategy;
+
+        if(strategy.equals(SearchProblem.SearchAlgorithms.AS1) || 
+            strategy.equals(SearchProblem.SearchAlgorithms.AS2) || strategy.equals(SearchProblem.SearchAlgorithms.GR1) 
+                || strategy.equals(SearchProblem.SearchAlgorithms.GR2)) {
+            this.priorityQueue.add(root);
+        } else {
+            this.queue.add(root);       
+        }
+        
         this.visitedStates = new HashSet<>();
         this.cutOff = -1;
     }
@@ -447,5 +458,46 @@ public class SearchProblem {
         return strategyAlgo;
     }
 
-    
+    public static Comparator<Node> getComparatorBasedOnStrategy(SearchProblem.SearchAlgorithms strategy){
+
+        if(strategy.equals(SearchProblem.SearchAlgorithms.GR1)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction1() - o2.getHeuristicFunction1();
+                }
+            };
+        }
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.GR2)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction2() - o2.getHeuristicFunction2();
+                }
+            };
+        } 
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.AS1)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction1() - o2.getHeuristicFunction1();
+                }
+            };
+        }
+        else if(strategy.equals(SearchProblem.SearchAlgorithms.AS2)) {
+            return new Comparator<Node>() {
+                @Override
+                public int compare(Node o1, Node o2) {
+                    return o1.getHeuristicFunction2() - o2.getHeuristicFunction2();
+                }
+            };
+        }
+
+        return new Comparator<Node>() {
+            @Override
+            public int compare(Node o1, Node o2) {
+                return 1;
+            }
+        };
+    }
 }
