@@ -66,7 +66,7 @@ public class UnitedWeStandSearch extends GenericSearch {
             goalNode = gs.GeneralSearchFuntion(problem, AS2CallBack);
         }
         if (goalNode == null) {
-            result = "NOSOLUTION";
+            result = "nosolution";
         } else {
             result = goalNode.getPathToGoal(visualize);
         }
