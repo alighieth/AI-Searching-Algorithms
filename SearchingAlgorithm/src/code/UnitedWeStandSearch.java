@@ -1,10 +1,11 @@
 package code;
 
-public class LLAPSearch extends GenericSearch {
+public class UnitedWeStandSearch extends GenericSearch {
     public static String solve(String initalState, String strategy, boolean visualize) {
         GenericSearch gs = new GenericSearch();
         SearchProblem.SearchAlgorithms searchAlgorithm = SearchProblem.getSearchAlgo(strategy);
-        SearchProblem problem = new SearchProblem(initalState, searchAlgorithm, visualize);
+        Grid grid = Grid.generateGrid(initalState);
+        SearchProblem problem = new SearchProblem(grid, searchAlgorithm, visualize);
         Node goalNode = null;
         String result = "";
 
@@ -13,22 +14,19 @@ public class LLAPSearch extends GenericSearch {
                 SearchAlgorithms.breadthFirstSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, BFCallBack);
-        } 
-        else if (SearchProblem.SearchAlgorithms.DF.equals(searchAlgorithm)) {
+        } else if (SearchProblem.SearchAlgorithms.DF.equals(searchAlgorithm)) {
             Q_INGFunc DFCallBack = (SearchProblem searchProblem, Node parentNode) -> {
                 SearchAlgorithms.depthFirstSearch(searchProblem, parentNode);
             };
             goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
-        }
-        else if (SearchProblem.SearchAlgorithms.ID.equals(searchAlgorithm)) {
+        } else if (SearchProblem.SearchAlgorithms.ID.equals(searchAlgorithm)) {
             Q_INGFunc DFCallBack = (SearchProblem searchProblem, Node parentNode) -> {
                 SearchAlgorithms.depthFirstSearch(searchProblem, parentNode);
             };
 
             int cutoff = 0;
-            while (goalNode == null)
-            {
-                problem = new SearchProblem(initalState, searchAlgorithm, visualize);
+            while (goalNode == null) {
+                problem = new SearchProblem(grid, searchAlgorithm, visualize);
                 problem.cutOff = cutoff;
                 goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
                 cutoff++;
@@ -70,8 +68,7 @@ public class LLAPSearch extends GenericSearch {
         if (goalNode == null) {
             result = "NOSOLUTION";
         } else {
-            result = goalNode.getPathToGoal(visualize) + ";" + goalNode.getState().money_spent + ";"
-                    + problem.nodesExpandedCounter;
+            result = goalNode.getPathToGoal(visualize);
         }
         System.out.println("");
         System.out.println(result);
@@ -80,15 +77,9 @@ public class LLAPSearch extends GenericSearch {
 
     public static void main(String[] args) {
 
-        String initialState0  ="32;" +
-        "20,16,11;" +
-        "76,14,14;" +
-        "9,1;9,2;9,1;" +
-        "358,14,25,23,39;" +
-        "5024,20,17,17,38;";
-
-        LLAPSearch.solve(initialState0, "BF", false);
+        String initialState0 = "4;3;0,1,2,1,0,2;2,0,3,0,1,2,1,0,0,0;";
+        UnitedWeStandSearch.solve(initialState0, "BF", false);
         Long rt = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();
-        System.out.println("rt "+ rt);
+        System.out.println("rt " + rt);
     }
 }

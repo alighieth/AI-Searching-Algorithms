@@ -3,11 +3,12 @@ package code;
 interface Q_INGFunc {
     void onCallback(SearchProblem problem, Node parentNode);
 }
+
 public class GenericSearch {
 
     public Node GeneralSearchFuntion(SearchProblem problem, Q_INGFunc callbackFunction) {
         while (!problem.queue.isEmpty()) {
-             Node headNode = problem.queue.remove();
+            Node headNode = problem.queue.remove();
 
             problem.currentNode = headNode;
             if (isGoalState(headNode)) {
@@ -21,7 +22,6 @@ public class GenericSearch {
     }
 
     public static boolean isGoalState(Node node) {
-        NodeState nodeState = node.getState();
-        return nodeState.prosperity >= 100;
+        return node.getState().getOrganisms().size() == 1;
     }
 }

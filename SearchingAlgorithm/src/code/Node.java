@@ -1,23 +1,24 @@
 package code;
+
 import java.util.Stack;
 
 public class Node {
-    private NodeState state;
+    private Grid state;
     private Node parent;
     private SearchProblem.Operators operator;
     private int depth;
-    public RequestDelivery delivery;
+    private int cost;
 
-    public Node(NodeState state, Node parent, SearchProblem.Operators operator, int depth, int heuristic1,
-            int heuristic2, RequestDelivery delivery) {
+    public Node(Grid state, Node parent, SearchProblem.Operators operator, int cost, int depth, int heuristic1,
+            int heuristic2) {
         this.state = state;
         this.parent = parent;
         this.operator = operator;
         this.depth = depth;
-        this.delivery = delivery;
+        this.cost = cost;
     }
 
-    public NodeState getState() {
+    public Grid getState() {
         return state;
     }
 
@@ -33,77 +34,74 @@ public class Node {
         return depth;
     }
 
+    public int getCost() {
+        return cost;
+    }
+
     public String getPathToGoal(boolean visualize) {
-        Stack<Node> stack = new Stack<Node>();
+        Stack<Node> stack = new Stack<>();
         Node node = this;
         String result = "";
+        int expandedNodes = 0; // Assuming you have a way to count expanded nodes
+
         while (node.getParent() != null) {
             stack.push(node);
             node = node.getParent();
         }
-    	
+
         while (!stack.isEmpty()) {
-        	Node topNode = stack.pop();
-        	       	
-        	if (visualize)
-        	{
-        		System.out.println("State: " + topNode.getState());
-            	System.out.println("Money_Spent: " + topNode.getState().money_spent);
-        	}
-        	
-            switch(topNode.getOperator()) {
-                case REQUEST_FOOD:
-                    result += "RequestFood,";
+            Node topNode = stack.pop();
+
+            switch (topNode.getOperator()) {
+                case EAST:
+                    result += "EAST";
                     break;
-                case REQUEST_MATERIALS:
-                    result += "RequestMaterials,";
+                case WEST:
+                    result += "WEST";
                     break;
-                case REQUEST_ENERGY:
-                    result += "RequestEnergy,";
+                case NORTH:
+                    result += "NORTH";
                     break;
-                case WAIT:
-                    result += "WAIT,";
-                    break;
-                case Build1:
-                    result += "BUILD1,";
-                    break;
-                case Build2:
-                    result += "BUILD2,";
+                case SOUTH:
+                    result += "SOUTH";
                     break;
             }
-            //result += topNode.toString() + "\n";
-            if (visualize)
-            {
+
+            result += "_"; // Separator between action and coordinates
+            result += topNode.getState().getOrganisms().get(0).getX() + "_"
+                    + topNode.getState().getOrganisms().get(0).getY();
+            result += ","; // Separator between actions
+
+            cost = topNode.getCost(); // Assuming getCost() returns the cost of this node
+
+            expandedNodes++; // Counting expanded nodes
+
+            if (visualize) {
+                System.out.println("State: " + topNode.getState());
                 SearchProblem.Operators op = topNode.getOperator();
-            	if ( op !=null)
-            	{
-            		System.out.println("Operator_Applied: " + op);
-                	System.out.println("----------------------------------");
-            	}
+                if (op != null) {
+                    System.out.println("Operator Applied: " + op);
+                    System.out.println("----------------------------------");
+                }
             }
-            
-            
         }
-        return result.substring(0, result.length() - 1);
-    }
 
-    public String toString() {
-    	return "Food " + state.food + " ,Energy " + state.energy + " ,Materials " + state.materials + " ,Depth " + depth + " ,Prosperity " + state.prosperity;
-    }
+        if (!result.isEmpty()) {
+            result = result.substring(0, result.length() - 1); // Remove the trailing comma
+        }
 
-    public String getStringRepresentation() {
-        return String.format("%d-%d-%d-%d-%d-%s", state.food, state.energy, state.materials, state.prosperity, delivery == null ? 0 : delivery.delay, delivery == null ? "0" : delivery.type.name());
-    } 
+        // Format the final return string
+        String finalResult = result + ";" + cost + ";" + expandedNodes;
+
+        return finalResult;
+    }
 
     public int getHeuristicFunction1() {
-        return (int) (100 - this.state.prosperity) / Math.max(SearchProblem.prosperityBUILD1, SearchProblem.prosperityBUILD2);
+        return 0;
     }
 
     public int getHeuristicFunction2() {
-        int remainingBuild1 =  (int) (100 - this.state.prosperity) / SearchProblem.prosperityBUILD1;
-        int remainingBuild2 =  (int) (100 - this.state.prosperity) / SearchProblem.prosperityBUILD2;
-        int foodNeeded_1 = Math.max(remainingBuild1 * SearchProblem.foodUseBUILD1 - this.state.food, 0);
-        int foodNeeded_2 = Math.max(remainingBuild2 * SearchProblem.foodUseBUILD2 - this.state.food, 0);
-        return Math.min(remainingBuild1 + foodNeeded_1, remainingBuild2 + foodNeeded_2);
+
+        return 0;
     }
 }
