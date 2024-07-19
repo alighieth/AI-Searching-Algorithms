@@ -3,23 +3,23 @@ package code;
 import java.util.Stack;
 
 public class Node {
-    private Grid state;
     private Node parent;
+    private Cell[][] grid;
     private SearchProblem.Operators operator;
     private int depth;
     private int cost;
 
-    public Node(Grid state, Node parent, SearchProblem.Operators operator, int cost, int depth, int heuristic1,
+    public Node(Cell[][] grid, Node parent, SearchProblem.Operators operator, int cost, int depth, int heuristic1,
             int heuristic2) {
-        this.state = state;
+        this.grid = grid;
         this.parent = parent;
         this.operator = operator;
         this.depth = depth;
         this.cost = cost;
     }
 
-    public Grid getState() {
-        return state;
+    public Cell[][] getState() {
+        return grid;
     }
 
     public Node getParent() {
@@ -67,14 +67,14 @@ public class Node {
                     break;
             }
 
-            result += "_"; // Separator between action and coordinates
-            result += topNode.getState().getOrganisms().get(0).getX() + "_"
-                    + topNode.getState().getOrganisms().get(0).getY();
-            result += ","; // Separator between actions
+            result += "_";
+            // result += topNode.getState().getOrganisms().get(0).getX() + "_"
+            // + topNode.getState().getOrganisms().get(0).getY();
+            // result += ",";
 
-            cost = topNode.getCost(); // Assuming getCost() returns the cost of this node
+            cost = topNode.getCost();
 
-            expandedNodes++; // Counting expanded nodes
+            expandedNodes++;
 
             if (visualize) {
                 System.out.println("State: " + topNode.getState());
@@ -85,14 +85,10 @@ public class Node {
                 }
             }
         }
-
         if (!result.isEmpty()) {
-            result = result.substring(0, result.length() - 1); // Remove the trailing comma
+            result = result.substring(0, result.length() - 1);
         }
-
-        // Format the final return string
         String finalResult = result + ";" + cost + ";" + expandedNodes;
-
         return finalResult;
     }
 

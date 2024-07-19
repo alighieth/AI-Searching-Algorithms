@@ -3,9 +3,8 @@ package code;
 public class UnitedWeStandSearch extends GenericSearch {
     public static String solve(String initalState, String strategy, boolean visualize) {
         GenericSearch gs = new GenericSearch();
-        SearchProblem.SearchAlgorithms searchAlgorithm = SearchProblem.getSearchAlgo(strategy);
-        Grid grid = Grid.generateGrid(initalState);
-        SearchProblem problem = new SearchProblem(grid, searchAlgorithm, visualize);
+        SearchProblem.SearchAlgorithms searchAlgorithm = SearchProblem.getSearchAlgorithms(strategy);
+        SearchProblem problem = new SearchProblem(initalState, searchAlgorithm, visualize);
         Node goalNode = null;
         String result = "";
 
@@ -26,7 +25,7 @@ public class UnitedWeStandSearch extends GenericSearch {
 
             int cutoff = 0;
             while (goalNode == null) {
-                problem = new SearchProblem(grid, searchAlgorithm, visualize);
+                problem = new SearchProblem(initalState, searchAlgorithm, visualize);
                 problem.cutOff = cutoff;
                 goalNode = gs.GeneralSearchFuntion(problem, DFCallBack);
                 cutoff++;
@@ -76,7 +75,6 @@ public class UnitedWeStandSearch extends GenericSearch {
     }
 
     public static void main(String[] args) {
-
         String initialState0 = "4;3;0,1,2,1,0,2;2,0,3,0,1,2,1,0,0,0;";
         UnitedWeStandSearch.solve(initialState0, "BF", false);
         Long rt = Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory();

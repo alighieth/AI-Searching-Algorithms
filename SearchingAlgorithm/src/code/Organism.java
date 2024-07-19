@@ -1,33 +1,17 @@
 package code;
 
-public class Organism {
+public class Organism implements Cell {
     public enum Direction {
         UP, DOWN, LEFT, RIGHT
     }
 
     private int x;
     private int y;
+    private int weight = 1;
 
     public Organism(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-    public void move(Direction direction) {
-        switch (direction) {
-            case UP:
-                this.y--;
-                break;
-            case DOWN:
-                this.y++;
-                break;
-            case LEFT:
-                this.x--;
-                break;
-            case RIGHT:
-                this.x++;
-                break;
-        }
     }
 
     public int getX() {
@@ -44,5 +28,13 @@ public class Organism {
 
     public void setY(int newPosition) {
         this.y = newPosition;
+    }
+
+    public int getSize() {
+        return weight;
+    }
+
+    public int setSize() {
+        return weight++;
     }
 }

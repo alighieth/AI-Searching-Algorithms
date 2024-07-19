@@ -22,6 +22,6 @@ public class GenericSearch {
     }
 
     public static boolean isGoalState(Node node) {
-        return node.getState().getOrganisms().size() == 1;
+        return Grid.getOrganisms(node.getState()).size() == 1;
     }
 }

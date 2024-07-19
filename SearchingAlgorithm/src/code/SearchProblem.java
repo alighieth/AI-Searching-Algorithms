@@ -1,8 +1,8 @@
 package code;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class SearchProblem {
@@ -30,12 +30,12 @@ public class SearchProblem {
     public int cutOff;
     HashSet<String> visitedStates;
 
-    public SearchProblem(Grid grid, SearchAlgorithms strategy, boolean visualize) {
+    public SearchProblem(String input, SearchAlgorithms strategy, boolean visualize) {
         this.visualize = visualize;
         if (visualize) {
             printAttr();
         }
-
+        Cell[][] grid = Grid.genGrid(input);
         this.root = new Node(grid, null, null, 0, 0, 0, 0);
         this.strategy = strategy;
         this.queue.add(root);
@@ -48,93 +48,151 @@ public class SearchProblem {
         System.out.println("Initial Conditions:");
         System.out.println("-----------------------");
 
-        System.out.println("-------------------------------------------");
-    }
-
-    public LinkedList<Node> applyOperators(LinkedList<SearchProblem.Operators> pOperators, Node parentNode) {
-        LinkedList<Node> operatorNodes = new LinkedList<>();
-
-        try {
-            ArrayList<Organism> newOrganisms = new ArrayList<>();
-            for (Organism organism : parentNode.getState().getOrganisms()) {
-                Organism o = null;
-                for (Operators operator : pOperators) {
-                    if (operator == Operators.EAST) {
-                        o = new Organism(organism.getX() + 1, organism.getY());
-
-                    }
-                    if (operator == Operators.WEST) {
-                        o = new Organism(organism.getX() - 1, organism.getY());
-
-                    }
-                    if (operator == Operators.NORTH) {
-                        o = new Organism(organism.getX(), organism.getY() + 1);
-
-                    }
-                    if (operator == Operators.SOUTH) {
-                        o = new Organism(organism.getX(), organism.getY() - 1);
-
-                    }
-                    newOrganisms.add(o);
-
-                }
-                Grid g = new Grid(parentNode.getState().getWidth(), parentNode.getState().getHeight(),
-                        newOrganisms, parentNode.getState().getObstacles());
-                Node n = new Node(g, parentNode, parentNode.getOperator(), parentNode.getCost(), parentNode.getDepth(),
-                        parentNode.getHeuristicFunction1(), parentNode.getHeuristicFunction2());
-                operatorNodes.add(n);
-            }
-
-            return operatorNodes;
-
-        } catch (Exception e) {
-
-            return operatorNodes;
-        }
-    }
-
-    public boolean isOperatorValid(Node parent, Operators operator) {
-        // parent.getOperator()
-        return true;
+        System.out.println("-----------------------");
     }
 
     public Node getRoot() {
         return root;
     }
 
-    public int calculateActionCost(Operators action) {
-        return 0;
+    public int calculateActionCost(Organism organism, int numberOfCells) {
+        return organism.getSize() * numberOfCells;
     }
 
     public LinkedList<Node> expandNode(Node currNode) {
+        List<Organism> nodeOrganisms = (List<Organism>) Grid.getOrganisms(currNode.getState());
         LinkedList<Node> children = new LinkedList<>();
 
+        for (Cell organism : nodeOrganisms) {
+            LinkedList<SearchProblem.Operators> possibleOperators = getPossibleOperators(currNode, organism);
+            for (Operators operator : possibleOperators) {
+                Organism o = moveOrganism(currNode, operator, organism);
+                Grid newGrid = new Grid(currNode.getState().getWidth(), currNode.getState().getHeight(), nodeOrganisms,
+                        currNode.getState().getObstacles());
+                newGrid.removeOrganism(o.getX(), o.getY());
+                newGrid.addOrganism(o);
+                Node child = new Node(currNode.getState(), currNode.getParent(), operator, currNode.getCost() + 1,
+                        currentNode.getDepth() + 1, 0, 0);
+                children.add(child);
+            }
+        }
         this.nodesExpandedCounter++;
-        LinkedList<SearchProblem.Operators> possibleOperators = getPossibleOperators(currNode);
-        children = applyOperators(possibleOperators, currNode);
-
         return children;
     }
 
-    public LinkedList<SearchProblem.Operators> getPossibleOperators(Node currentNode) {
+    public Organism moveOrganism(Node currentNode, Operators operator, Organism organism) {
+        // move until you hit an obstacle or an organism
+        int x = organism.getX();
+        int y = organism.getY();
+
+        if (operator == Operators.EAST) {
+            while (x < currentNode.getState().length && currentNode.getState()[x][y] == null) {
+                x++;
+            }
+            if (x + 1 < currentNode.getState().length && currentNode.getState()[x][y] instanceof Organism) {
+                organism = merge(organism, currentNode.getState()[x + 1][y]);
+                x++;
+            }
+            x--;
+        } else if (operator == Operators.WEST) {
+            while (x >= 0 && currentNode.getState()[x][y] == null) {
+                x--;
+            }
+            if (x + 1 < currentNode.getState().length && currentNode.getState()[x][y] instanceof Organism) {
+                organism = merge(organism, currentNode.getState()[x - 1][y]);
+                x++;
+            }
+            x++;
+        } else if (operator == Operators.NORTH) {
+            while (y < currentNode.getState()[0].length && currentNode.getState()[x][y] == null) {
+                y++;
+            }
+            if (x + 1 < currentNode.getState().length && currentNode.getState()[x][y] instanceof Organism) {
+                organism = merge(organism, currentNode.getState()[x][y - 1]);
+                x++;
+            }
+            y--;
+        } else if (operator == Operators.SOUTH) {
+            while (y >= 0 && currentNode.getState()[x][y] == null) {
+                y--;
+            }
+            if (x + 1 < currentNode.getState().length && currentNode.getState()[x][y] instanceof Organism) {
+                organism = merge(organism, currentNode.getState()[x][y + 1]);
+                x++;
+            }
+            y++;
+        }
+        return new Organism(x, y);
+    }
+
+    public Organism merge(Organism organism, Cell cell) {
+        Organism o = new Organism(cell.getX(), cell.getY());
+        o.setSize();
+        return o;
+    }
+
+    public LinkedList<SearchProblem.Operators> getPossibleOperators(Node currentNode, Organism organism) {
         LinkedList<SearchProblem.Operators> possibleOperators = new LinkedList<>();
 
-        if (isOperatorValid(currentNode, Operators.EAST)) {
+        if (isOperatorValid(currentNode, Operators.EAST, organism)) {
             possibleOperators.addLast(SearchProblem.Operators.EAST);
         }
 
-        if (isOperatorValid(currentNode, Operators.NORTH)) {
+        if (isOperatorValid(currentNode, Operators.NORTH, organism)) {
             possibleOperators.addLast(SearchProblem.Operators.NORTH);
         }
 
-        if (isOperatorValid(currentNode, Operators.WEST)) {
+        if (isOperatorValid(currentNode, Operators.WEST, organism)) {
             possibleOperators.addLast(SearchProblem.Operators.WEST);
         }
-        if (isOperatorValid(currentNode, Operators.SOUTH)) {
+        if (isOperatorValid(currentNode, Operators.SOUTH, organism)) {
             possibleOperators.addLast(SearchProblem.Operators.SOUTH);
         }
 
         return possibleOperators;
+    }
+
+    public boolean isOperatorValid(Node parent, Operators operator, Organism organism) {
+        int size = 0;
+        int i = 0;
+        if (operator == Operators.EAST) {
+            size = parent.getState().length;
+
+            for (i = organism.getX(); i < size; i++) {
+                if (organism.getX() + 1 == i && parent.getState()[i][organism.getY()] instanceof Obstacles)
+                    return false;
+
+            }
+            if (i == size)
+                return false;
+            else if (operator == Operators.WEST) {
+                size = parent.getState().length;
+                for (i = organism.getX(); i >= 0; i--) {
+                    if (organism.getX() + 1 == i && parent.getState()[i][organism.getY()] instanceof Obstacles)
+                        return false;
+                }
+                if (i == -1)
+                    return false;
+            } else if (operator == Operators.NORTH) {
+                size = parent.getState()[0].length;
+                for (i = organism.getY(); i >= 0; i--) {
+                    if (organism.getY() + 1 == i && parent.getState()[organism.getX()][i] instanceof Obstacles)
+                        return false;
+                }
+                if (i == -1)
+                    return false;
+            }
+        } else if (operator == Operators.SOUTH) {
+            size = parent.getState()[0].length;
+            for (i = organism.getY(); i < size; i++) {
+                if (organism.getY() + 1 == i && parent.getState()[organism.getX()][i] instanceof Obstacles)
+                    return false;
+
+            }
+            if (i == size)
+                return false;
+        }
+        return true;
     }
 
     public static LinkedList<Node> getPathToGoal(Node inputNode, boolean visualize) {
@@ -150,7 +208,7 @@ public class SearchProblem {
         return pathToGoal;
     }
 
-    public static SearchProblem.SearchAlgorithms getSearchAlgo(String strategy) {
+    public static SearchProblem.SearchAlgorithms getSearchAlgorithms(String strategy) {
         SearchProblem.SearchAlgorithms strategyAlgo = SearchProblem.SearchAlgorithms.AS1;
 
         if (SearchProblem.SearchAlgorithms.BF.name().equals(strategy)) {
